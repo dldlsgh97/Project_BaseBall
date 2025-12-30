@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class PlayUI : UIBase
 {
-    private void Start()
-    {
-        gm = GameManager.instance;
-        uiMan = gm.ui;
-    }
     public override void OnOpened(object[] param)
     {
         Debug.Log("PlayUI Open");
