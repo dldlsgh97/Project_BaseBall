@@ -12,6 +12,13 @@ public class Ball : MonoBehaviour
     private PitcherCtrl pitcherCtrl;
     [SerializeField]
     private float ballSpeed;
+    [SerializeField]
+    private Vector3 midPosition;
+
+    private float elapsed;
+
+    private float curveDuration = 1.0f;
+    public float curveAmount = 2.0f;
     void Start()
     {
         gameObject.transform.position = StartPosition.position;
@@ -23,10 +30,11 @@ public class Ball : MonoBehaviour
     }
     public void ThrowBall()
     {
-        StartCoroutine(BallToTarget(TargetPosition.position));
+        //StartCoroutine(FastBall(TargetPosition.position));
+        StartCoroutine(CurveBall());
     }
 
-    IEnumerator BallToTarget(Vector3 target)
+    IEnumerator FastBall(Vector3 target)
     {
         while(Vector3.Distance(gameObject.transform.position , target) > 0.05f)
         {
@@ -35,6 +43,37 @@ public class Ball : MonoBehaviour
         }
         Debug.Log("°ø µµÂø");
         gameObject.transform.position = StartPosition.position;
+        pitcherCtrl.BallToTarget();
+    }
+
+    IEnumerator CurveBall()
+    {
+        Vector3 start = StartPosition.position;
+        Vector3 end = TargetPosition.position;       
+        Vector3 mid = (start + end) * 0.5f;
+
+        Vector3 right = Vector3.Cross(Vector3.up, end - start).normalized;
+
+        Vector3 apex = mid + right * curveAmount;
+
+        elapsed = 0f;
+
+        while (elapsed < curveDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / curveDuration;
+
+            Vector3 p1 = Vector3.Lerp(start, apex, t);
+            Vector3 p2 = Vector3.Lerp(apex, end, t);
+            Vector3 curvePos = Vector3.Lerp(p1, p2, t);
+
+            transform.position = curvePos;
+
+            yield return null;
+        }
+
+        Debug.Log("Ä¿ºêº¼ µµÂø");
+        transform.position = StartPosition.position;
         pitcherCtrl.BallToTarget();
     }
 }

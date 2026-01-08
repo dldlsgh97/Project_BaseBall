@@ -27,6 +27,7 @@ public class PitcherCtrl : MonoBehaviour
     {
         Pitch();
         Debug.Log("PitcherCtrl_ Update");
+        //추후 인풋 시스템으로 변경 예정
         if (Input.GetMouseButtonDown(0))
         {
             is_throw = false;
