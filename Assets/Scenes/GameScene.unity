@@ -942,6 +942,8 @@ MonoBehaviour:
   TargetPosition: {fileID: 621053085}
   pitcherCtrl: {fileID: 779020896}
   ballSpeed: 0
+  midPosition: {x: 0, y: 0, z: 0}
+  curveAmount: 5
 --- !u!1 &480080580
 GameObject:
   m_ObjectHideFlags: 0
