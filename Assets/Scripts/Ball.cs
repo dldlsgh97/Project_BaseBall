@@ -31,7 +31,7 @@ public class Ball : MonoBehaviour
     public void ThrowBall()
     {
         //StartCoroutine(FastBall(TargetPosition.position));
-        StartCoroutine(CurveBall());
+        StartCoroutine(SliderBall());
     }
 
     IEnumerator FastBall(Vector3 target)
@@ -73,6 +73,36 @@ public class Ball : MonoBehaviour
         }
 
         Debug.Log("커브볼 도착");
+        transform.position = StartPosition.position;
+        pitcherCtrl.BallToTarget();
+    }
+    IEnumerator SliderBall()
+    {
+        Vector3 start = StartPosition.position;
+        Vector3 end = TargetPosition.position;
+        Vector3 mid = (start + end) * 0.5f;
+
+        Vector3 right = Vector3.Cross(Vector3.up, end - start).normalized;
+
+        Vector3 apex = mid - right * curveAmount;
+
+        elapsed = 0f;
+
+        while (elapsed < curveDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / curveDuration;
+
+            Vector3 p1 = Vector3.Lerp(start, apex, t);
+            Vector3 p2 = Vector3.Lerp(apex, end, t);
+            Vector3 curvePos = Vector3.Lerp(p1, p2, t);
+
+            transform.position = curvePos;
+
+            yield return null;
+        }
+
+        Debug.Log("슬라이더볼 도착");
         transform.position = StartPosition.position;
         pitcherCtrl.BallToTarget();
     }
