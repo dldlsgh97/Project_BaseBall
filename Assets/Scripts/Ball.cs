@@ -28,15 +28,26 @@ public class Ball : MonoBehaviour
     {
         
     }
-    public void ThrowBall()
+    public void ThrowBall(PitchType type)
     {
-        //StartCoroutine(FastBall(TargetPosition.position));
-        StartCoroutine(SliderBall());
+        switch (type)
+        {
+            case PitchType.FastBall:
+                StartCoroutine(FastBall());
+                break;
+            case PitchType.CurveBall:
+                StartCoroutine(CurveBall());
+                break;
+            case PitchType.SliderBall:
+                StartCoroutine(SliderBall());
+                break;
+        }
     }
 
-    IEnumerator FastBall(Vector3 target)
+    IEnumerator FastBall()
     {
-        while(Vector3.Distance(gameObject.transform.position , target) > 0.05f)
+        Vector3 target = TargetPosition.position;
+        while (Vector3.Distance(gameObject.transform.position , target) > 0.05f)
         {
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target, ballSpeed * Time.deltaTime);
             yield return null;
