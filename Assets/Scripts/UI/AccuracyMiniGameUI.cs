@@ -128,6 +128,7 @@ public class AccuracyMiniGameUI : UIBase
 
             var result = CheckAccuracy(ratio); //정확도 판단
             onComplete?.Invoke(result); //콜백으로 결과 전달
+            isInitAccuaracy = false;
             uiMan.Hide <AccuracyMiniGameUI>();//미니게임 창 닫기
         }
 
