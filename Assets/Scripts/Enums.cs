@@ -23,4 +23,12 @@ public enum PitchState
     Throwing//던지는 상태(최종 상태)
 }
 
-
+//정확도 미니게임 결과 enum
+public enum AccuracyResult
+{
+    Perfect,
+    VeryGood,
+    Good,
+    Bad,
+    Miss
+}
