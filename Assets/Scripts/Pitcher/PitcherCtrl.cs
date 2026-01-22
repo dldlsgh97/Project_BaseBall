@@ -16,6 +16,8 @@ public class PitcherCtrl : MonoBehaviour
     private Camera pitcherCam;
     [SerializeField]
     private GameObject targetObj;
+    [SerializeField]
+    private GameObject offsetTargetObj;
 
     private bool is_throw = true;
 
@@ -30,7 +32,7 @@ public class PitcherCtrl : MonoBehaviour
     private AccuracyMiniGameUI accUI;
 
     public PitchState State;
-
+    private float accuracyResult = 0;
     void Start()
     {
         gm = GameManager.instance;
@@ -43,6 +45,7 @@ public class PitcherCtrl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) // 임시 테스트용
         {
             State = PitchState.SelectingPitchType;
+            //State = PitchState.SetAccuracy;
         }
 
         switch (State)
@@ -87,17 +90,36 @@ public class PitcherCtrl : MonoBehaviour
     {
         is_throw = false;
         ballScript.gameObject.SetActive(true);
-        ballScript.ThrowBall(pitchUI.pitchType);
+        ballScript.ThrowBall(pitchUI.pitchType,accuracyResult);
     }
     public void BallToTarget()//도착한 공 비활성화
     {
         ballScript.gameObject.SetActive(false);
+        ballScript.Offset_Target_Position.SetActive(false);
         is_throw = true;
     }
 
     void OnAccuracyResult(AccuracyResult result) //정확도 미니게임결과이후 실행함수
     {
         Debug.Log("정확도 결과" + result);
+        switch (result)
+        {
+            case (AccuracyResult.Perfect):
+                accuracyResult = 0.1f;
+                break;
+            case (AccuracyResult.VeryGood):
+                accuracyResult = 0.3f;
+                break;
+            case (AccuracyResult.Good):
+                accuracyResult = 0.5f;
+                break;
+            case (AccuracyResult.Bad):
+                accuracyResult = 0.7f;
+                break;
+            case (AccuracyResult.Miss):
+                accuracyResult = 1.0f;
+                break;
+        }
         State = PitchState.Throwing;
     }
 }
