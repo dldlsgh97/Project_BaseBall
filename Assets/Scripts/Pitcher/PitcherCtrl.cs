@@ -44,8 +44,8 @@ public class PitcherCtrl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) // 임시 테스트용
         {
-            State = PitchState.SelectingPitchType;
-            //State = PitchState.SetAccuracy;
+            //State = PitchState.SelectingPitchType;
+            State = PitchState.SetAccuracy;
         }
 
         switch (State)
