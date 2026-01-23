@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class AccuracyMiniGameUI : UIBase
 {
@@ -50,6 +52,8 @@ public class AccuracyMiniGameUI : UIBase
     private RectTransform goodZone;
     [SerializeField]
     private RectTransform badZone;
+    [SerializeField]
+    private TextMeshProUGUI AccuaracyResultText;
     public override void OnOpened(object[] param)
     {
 
@@ -110,35 +114,40 @@ public class AccuracyMiniGameUI : UIBase
         {
             InitAccuracyMiniGame();
             isInitAccuaracy = true;
+            isMove = true;
         }
-        isMove = true;
+        //커서 안멈추는거 아마 여기일듯
+        
+        //여기임
     }
 
     private void Update() //기존 StartAccuaryMiniGame의 움직임 로직 분리
     {
+        if (!isMove)
+        {
+            Debug.Log("Update()에서 isMove == false 상태");
+            return;
+        }
+
         timer += Time.deltaTime;
-        if (!isMove) return;
-        
+
+        //화살표 이동 로직
+        float posX = Mathf.PingPong(timer * arrowSpeed, arrowRange) + gaugeLeftEdge + (arrowWidth / 2);
+        arrow.anchoredPosition = new Vector2(posX, arrow.anchoredPosition.y);
+
+
         if (Input.GetMouseButtonDown(0))
         {
             isMove = false;
-
+            Debug.Log("isMove = false 설정됨");
             float arrowX = arrow.anchoredPosition.x;
+            //arrow.anchoredPosition = new Vector2(arrowX, arrow.anchoredPosition.y);
             float ratio = (arrowX - gaugeLeftEdge) / gaugeWidth;
 
             var result = CheckAccuracy(ratio); //정확도 판단
-            onComplete?.Invoke(result); //콜백으로 결과 전달
-            isInitAccuaracy = false;
-            uiMan.Hide <AccuracyMiniGameUI>();//미니게임 창 닫기
-        }
-
-        if (isMove)
-        {            
-            //화살표 이동 로직
-            float posX = Mathf.PingPong(timer * arrowSpeed, arrowRange) + gaugeLeftEdge + (arrowWidth / 2);
-            arrow.anchoredPosition = new Vector2(posX, arrow.anchoredPosition.y);
-        }
-        
+            StartCoroutine(ShowResultAndClose(result));
+           
+        }   
     }
     void InitAccuracyMiniGame() //정확도 미니게임 화살표 초기화 및 타이머변수 초기화 로직
     {
@@ -151,7 +160,7 @@ public class AccuracyMiniGameUI : UIBase
         SetZoneUISize(badZone, badStartRatio, badEndRatio);
         float posX = gaugeLeftEdge + (arrowWidth / 2);
         arrow.anchoredPosition = new Vector2(posX, arrow.anchoredPosition.y);
-
+        AccuaracyResultText.text = "";
     }
     void SetZoneUISize(RectTransform zoneRT, float startRatio, float endRatio) //정확도 구간 UI크기 조정
     {
@@ -176,23 +185,37 @@ public class AccuracyMiniGameUI : UIBase
     {
         if (arrowX > perfectStartRatio && arrowX <= perfectEndRatio)
         {
+            AccuaracyResultText.text = "Perfect!";
             return AccuracyResult.Perfect;
         }
         else if (arrowX > veryGoodStartRatio && arrowX <= veryGoodEndRatio)
         {
+            AccuaracyResultText.text = "Very Good";
             return AccuracyResult.VeryGood;
         }
         else if (arrowX > goodStartRatio && arrowX <= goodEndRatio)
         {
+            AccuaracyResultText.text = "Good!";
             return AccuracyResult.Good;
         }
         else if (arrowX > badStartRatio && arrowX <= badEndRatio)
         {
+            AccuaracyResultText.text = "Bad!";
             return AccuracyResult.Bad;
         }
         else
         {
+            AccuaracyResultText.text = "Miss!";
             return AccuracyResult.Miss;
         }
+    }
+
+    private IEnumerator ShowResultAndClose(AccuracyResult result) //UI텍스트 표시딜레이용 코루틴
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        onComplete?.Invoke(result); //콜백으로 결과 전달
+        isInitAccuaracy = false;
+        uiMan.Hide<AccuracyMiniGameUI>();//미니게임 창 닫기
     }
 }
