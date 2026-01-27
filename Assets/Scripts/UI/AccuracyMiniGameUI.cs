@@ -44,6 +44,8 @@ public class AccuracyMiniGameUI : UIBase
     private float goodRatio = 0.5f;
     private float badRatio = 0.1f;
 
+    private float maxDuration = 2f; //커서 왕복 시간
+
     [SerializeField]
     private RectTransform perfectZone;
     [SerializeField]
@@ -54,10 +56,7 @@ public class AccuracyMiniGameUI : UIBase
     private RectTransform badZone;
     [SerializeField]
     private TextMeshProUGUI AccuaracyResultText;
-    public override void OnOpened(object[] param)
-    {
 
-    }
     void Awake()
     {
         rt = gauge.GetComponent<RectTransform>();
@@ -116,35 +115,38 @@ public class AccuracyMiniGameUI : UIBase
             isInitAccuaracy = true;
             isMove = true;
         }
-        //커서 안멈추는거 아마 여기일듯
-        
-        //여기임
     }
 
     private void Update() //기존 StartAccuaryMiniGame의 움직임 로직 분리
     {
-        if (!isMove)
-        {
-            Debug.Log("Update()에서 isMove == false 상태");
-            return;
-        }
+        if (!isMove) return;
 
         timer += Time.deltaTime;
+        float halfDuration = maxDuration / 2;
 
-        //화살표 이동 로직
-        float posX = Mathf.PingPong(timer * arrowSpeed, arrowRange) + gaugeLeftEdge + (arrowWidth / 2);
+        //화살표 이동 로직 (시간 기반으로 한번만 왕복)
+        float durationRatio = Mathf.PingPong(timer, halfDuration) / halfDuration;
+        float posX = Mathf.Lerp(gaugeLeftEdge + (arrowWidth / 2), gaugeLeftEdge + arrowRange + (arrowWidth / 2), durationRatio);       
+        //float posX = Mathf.PingPong(timer * arrowSpeed, arrowRange) + gaugeLeftEdge + (arrowWidth / 2);
         arrow.anchoredPosition = new Vector2(posX, arrow.anchoredPosition.y);
 
+        //시간초과 자동 실패
+        if(timer >= maxDuration)
+        {
+            isMove = false;
+            Debug.Log("시간 초과 실패");
+            StartCoroutine(ShowResultAndClose(AccuracyResult.Miss));
+        }
 
+        //클릭시 정확도 판정
         if (Input.GetMouseButtonDown(0))
         {
             isMove = false;
-            Debug.Log("isMove = false 설정됨");
             float arrowX = arrow.anchoredPosition.x;
-            //arrow.anchoredPosition = new Vector2(arrowX, arrow.anchoredPosition.y);
             float ratio = (arrowX - gaugeLeftEdge) / gaugeWidth;
 
             var result = CheckAccuracy(ratio); //정확도 판단
+            Debug.Log(result);
             StartCoroutine(ShowResultAndClose(result));
            
         }   
@@ -185,33 +187,29 @@ public class AccuracyMiniGameUI : UIBase
     {
         if (arrowX > perfectStartRatio && arrowX <= perfectEndRatio)
         {
-            AccuaracyResultText.text = "Perfect!";
             return AccuracyResult.Perfect;
         }
         else if (arrowX > veryGoodStartRatio && arrowX <= veryGoodEndRatio)
         {
-            AccuaracyResultText.text = "Very Good";
             return AccuracyResult.VeryGood;
         }
         else if (arrowX > goodStartRatio && arrowX <= goodEndRatio)
         {
-            AccuaracyResultText.text = "Good!";
             return AccuracyResult.Good;
         }
         else if (arrowX > badStartRatio && arrowX <= badEndRatio)
         {
-            AccuaracyResultText.text = "Bad!";
             return AccuracyResult.Bad;
         }
         else
         {
-            AccuaracyResultText.text = "Miss!";
             return AccuracyResult.Miss;
         }
     }
 
     private IEnumerator ShowResultAndClose(AccuracyResult result) //UI텍스트 표시딜레이용 코루틴
     {
+        AccuaracyResultText.text = result.ToString();
         yield return new WaitForSeconds(0.5f);
 
         onComplete?.Invoke(result); //콜백으로 결과 전달
