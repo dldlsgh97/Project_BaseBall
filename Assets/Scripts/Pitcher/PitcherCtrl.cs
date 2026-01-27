@@ -42,12 +42,6 @@ public class PitcherCtrl : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) // 임시 테스트용
-        {
-            //State = PitchState.SelectingPitchType;
-            State = PitchState.SetAccuracy;
-        }
-
         switch (State)
         {
             case (PitchState.SelectingPitchType):
@@ -68,6 +62,10 @@ public class PitcherCtrl : MonoBehaviour
         }
     }
     
+    public void OnClickPitcherLogicStartBtn() //테스트용 버튼 로직
+    {
+        State = PitchState.SelectingPitchType;
+    }
     void Pitch() // 탄착점 지정함수
     {
         if (is_throw)
