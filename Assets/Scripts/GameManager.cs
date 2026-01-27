@@ -3,12 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CameraMod
-{
-    Pitcher_Cam,
-    Hitter_Cam,
-    MainCam
-}
+
 public class GameManager : MonoBehaviour
 {
 
