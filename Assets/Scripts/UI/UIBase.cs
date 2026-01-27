@@ -14,13 +14,14 @@ public class UIBase : MonoBehaviour
     private void Awake()
     {
         opened = OnOpened;
-        closed = OnClosed;
-        
+        closed = OnClosed;       
     }
     private void Start()
     {
         gm = GameManager.instance;
-        uiMan = GameManager.instance.ui;
+        uiMan = gm.ui;
+
+        uiMan.ReisterUI(this); //UI 자동 등록로직
     }
 
     public void SetActive(bool isActive) //코드 압축용 SetActive 함수 생성
