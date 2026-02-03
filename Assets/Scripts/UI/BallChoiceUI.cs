@@ -18,7 +18,6 @@ public class BallChoiceUI : UIBase
     {
         pitcherCtrl.State = PitchState.SelectingTarget;
         Debug.Log("BallChoiceUI Close");
-
     }
 
     
