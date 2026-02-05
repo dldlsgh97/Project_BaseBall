@@ -36,6 +36,12 @@ public class PitcherCtrl : MonoBehaviour
     public PitchState State;
     private float accuracyResult = 0;
 
+    private float perfectResult = 0.1f;
+    private float veryGoodResult = 0.3f;
+    private float goodResult = 0.5f;
+    private float badResult = 0.7f;
+    private float missResult = 1.0f;
+
     //탄착점 로직 오브젝트 -> UI로 변경
     [SerializeField]
     private RectTransform pitcherPitchZoneUI;
@@ -118,7 +124,7 @@ public class PitcherCtrl : MonoBehaviour
     public void BallToTarget()//도착한 공 비활성화
     {
         ballScript.gameObject.SetActive(false);
-        ballScript.Offset_Target_Position.SetActive(false);
+        ballScript.Offset_Target.SetActive(false);
         is_throw = true;
     }
 
@@ -128,19 +134,19 @@ public class PitcherCtrl : MonoBehaviour
         switch (result)
         {
             case (AccuracyResult.Perfect):
-                accuracyResult = 0.1f;
+                accuracyResult = perfectResult;
                 break;
             case (AccuracyResult.VeryGood):
-                accuracyResult = 0.3f;
+                accuracyResult = veryGoodResult;
                 break;
             case (AccuracyResult.Good):
-                accuracyResult = 0.5f;
+                accuracyResult = goodResult;
                 break;
             case (AccuracyResult.Bad):
-                accuracyResult = 0.7f;
+                accuracyResult = badResult;
                 break;
             case (AccuracyResult.Miss):
-                accuracyResult = 1.0f;
+                accuracyResult = missResult;
                 break;
         }
         State = PitchState.Throwing;
@@ -148,7 +154,29 @@ public class PitcherCtrl : MonoBehaviour
 
     public void RequestPitch(PitchRequest request)
     {
-        targetObj.transform.position = request.TargetPos;
-        //pitchType = request.pitchType;
+        PitchType type = request.PitchType;
+        switch (request.Accuracy)
+        {
+            case (AccuracyResult.Perfect):
+                accuracyResult = perfectResult;
+                break;
+            case (AccuracyResult.VeryGood):
+                accuracyResult = veryGoodResult;
+                break;
+            case (AccuracyResult.Good):
+                accuracyResult = goodResult;
+                break;
+            case (AccuracyResult.Bad):
+                accuracyResult = badResult;
+                break;
+            case (AccuracyResult.Miss):
+                accuracyResult = missResult;
+                break;
+        }
+        float accuracy = accuracyResult;
+        Vector3 targetPos = request.TargetPos;
+        ballScript.gameObject.SetActive(true);
+        ballScript.ThrowBall(type, accuracy, targetPos);
+
     }
 }

@@ -23,15 +23,26 @@ public class Ball : MonoBehaviour
     [SerializeField]
     private Transform targetPoint; //정확도 오차적용된 탄착점
     [SerializeField]
-    public GameObject Offset_Target_Position;
+    public GameObject Offset_Target;
+
+    [SerializeField]
+    private Vector3 pos;
     void Start()
     {
         gameObject.transform.position = StartPosition.position;
         ballSpeed = pitcherCtrl.PitchSpeed;
     }
-
-    public void ThrowBall(PitchType type, float accuracy)
+    private void Update()
     {
+        pos = targetPoint.position;
+    }
+
+    public void ThrowBall(PitchType type, float accuracy,Vector3? targetPos = null)
+    {
+        if (targetPos.HasValue)
+        {
+            TargetPosition.transform.position = targetPos.Value;
+        }
         SetTargetPosition(accuracy);
         switch (type)
         {
@@ -49,8 +60,9 @@ public class Ball : MonoBehaviour
 
     void SetTargetPosition(float accuracy)
     {
-        float horizontalOffset = Random.RandomRange(0, accuracy); //가로 오차 랜덤값
-        float verticalOffset = Random.RandomRange(0, accuracy); //세로 오차 랜덤값
+        targetPoint.transform.position = TargetPosition.position;
+        float horizontalOffset = Random.Range(0, accuracy); //가로 오차 랜덤값
+        float verticalOffset = Random.Range(0, accuracy); //세로 오차 랜덤값
         
         float signX = 1; //가로오차 +- 부호
         float signY = 1; //세로오차 +- 부호
@@ -65,8 +77,8 @@ public class Ball : MonoBehaviour
         Vector3 offSet = (right * horizontalOffset * signX) + (Vector3.up * verticalOffset * signY);
 
         targetPoint.position += offSet;
-        Offset_Target_Position.SetActive(true);
-        Offset_Target_Position.transform.position = targetPoint.position;
+        Offset_Target.SetActive(true);
+        Offset_Target.transform.position = targetPoint.position;
     }
     IEnumerator FastBall()
     {
@@ -76,7 +88,6 @@ public class Ball : MonoBehaviour
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target, ballSpeed * Time.deltaTime);
             yield return null;
         }
-        Debug.Log("공 도착");
         gameObject.transform.position = StartPosition.position;
         pitcherCtrl.BallToTarget();
     }
@@ -107,7 +118,6 @@ public class Ball : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("커브볼 도착");
         transform.position = StartPosition.position;
         pitcherCtrl.BallToTarget();
     }
@@ -137,7 +147,6 @@ public class Ball : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("슬라이더볼 도착");
         transform.position = StartPosition.position;
         pitcherCtrl.BallToTarget();
     }
