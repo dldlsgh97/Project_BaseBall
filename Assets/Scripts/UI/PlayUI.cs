@@ -17,15 +17,20 @@ public class PlayUI : UIBase
     //투수 버튼 클릭시 현재 UI닫고 메인 카메라 변경
     public void OnClickPitherBtn()
     {
-        uiMan.Hide<PlayUI>();
         gm.SetCamera(CameraMod.Pitcher_Cam);
-        uiMan.Show<InGameUI>();
+        OpenUI();
     }
     //타자 버튼 클릭시 현재 UI닫고 메인 카메라 변경
     public void OnClickHitterBtn()
     {
-        uiMan.Hide<PlayUI>();
         gm.SetCamera(CameraMod.Hitter_Cam);
+        OpenUI();
+    }
+
+    void OpenUI()
+    {
+        uiMan.Hide<PlayUI>();
         uiMan.Show<InGameUI>();
+        uiMan.Show<PitchZoneUI>();
     }
 }

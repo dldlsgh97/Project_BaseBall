@@ -977,7 +977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1257,13 +1257,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {fileID: 1192766748}
-  TargetPosition: {fileID: 191818242}
+  TargetPosition: {fileID: 1170455660}
   pitcherCtrl: {fileID: 779020896}
   ballSpeed: 0
   midPosition: {x: 0, y: 0, z: 0}
   curveAmount: 5
-  targetPoint: {fileID: 1495599992}
-  Offset_Target_Position: {fileID: 1394380431}
+  targetPoint: {fileID: 1394380432}
+  Offset_Target: {fileID: 1394380431}
+  pos: {x: 0, y: 0, z: 0}
 --- !u!1 &383377274
 GameObject:
   m_ObjectHideFlags: 0
@@ -2246,6 +2247,7 @@ MonoBehaviour:
   - {fileID: 436501010}
   - {fileID: 1453806613}
   - {fileID: 1116167408}
+  - {fileID: 1982562479}
 --- !u!4 &751569971
 Transform:
   m_ObjectHideFlags: 0
@@ -2989,7 +2991,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &963194226
 AudioListener:
   m_ObjectHideFlags: 0
@@ -3507,7 +3509,7 @@ GameObject:
   - component: {fileID: 1116167406}
   - component: {fileID: 1116167408}
   m_Layer: 5
-  m_Name: PitchZone
+  m_Name: PitcherPitchZoneUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4424,7 +4426,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1329092850
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4914,7 +4916,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1394380432
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5857,7 +5859,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1615136405
 Transform:
   m_ObjectHideFlags: 0
@@ -6725,8 +6727,9 @@ GameObject:
   - component: {fileID: 1982562476}
   - component: {fileID: 1982562478}
   - component: {fileID: 1982562477}
+  - component: {fileID: 1982562479}
   m_Layer: 5
-  m_Name: PitchZone
+  m_Name: PitchZoneUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6767,7 +6770,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.27450982}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6792,6 +6795,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1982562475}
   m_CullTransparentMesh: 1
+--- !u!114 &1982562479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982562475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a984d9ccbffa124f96362899bedd6fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2012853251
 GameObject:
   m_ObjectHideFlags: 0

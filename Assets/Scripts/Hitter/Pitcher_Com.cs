@@ -10,22 +10,24 @@ public class Pitcher_Com : MonoBehaviour
 
     [SerializeField]
     private RectTransform PitchZone;
-    private Vector3 pitchZoneSize;
-
 
     //임시 정확도 배율
     private float perfectRatio = 1f;
     private float veryGoodRatio = 0.9f;
     private float goodRatio = 0.6f;
     private float badRatio = 0.1f;
+
+    private PitchZoneUI pitchZoneUI;
+
     private void Start()
     {
-        pitchZoneSize = PitchZone.GetComponent<Renderer>().bounds.size;
+        //pitchZoneSize = PitchZone.GetComponent<Renderer>().bounds.size;
+        pitchZoneUI = GameManager.instance.ui.Get<PitchZoneUI>();
     }
     private PitchType DecidePitchType()
     {
         PitchType result = PitchType.FastBall;
-        int rand = Random.RandomRange(1, 4);
+        int rand = Random.Range(1, 4);
         switch (rand)
         {
             case 1:
@@ -43,11 +45,23 @@ public class Pitcher_Com : MonoBehaviour
     }
     private Vector3 DecideTargetPos()
     {
+        //스트라이크존 중심점
         Vector3 center = PitchZone.transform.position;
-        float zoneWidth = PitchZone.rect.width;
-        float zoneHeight = PitchZone.rect.height;
-        //탄착점 지정
-        return new Vector3(0, 0, 0);
+
+        //스트라이크존 UI의 네 모서리 위치 받아오기
+        //corners[0] -> 좌하단 모서리 corners[2] -> 우상단 모서리
+        Vector3[] corners = pitchZoneUI.GetCorners();
+        float minX = corners[0].x;
+        float maxX = corners[2].x;
+        float minY = corners[0].y;
+        float maxY = corners[2].y;
+
+        //랜덤한 탄착점 지정
+        float randomX = Random.Range(minX, maxX);
+        float randomY = Random.Range(minY, maxY);
+        float z = center.z;
+        //탄착점 출력
+        return new Vector3(randomX,randomY,z);
     }
     private AccuracyResult DecideAccuracy()
     {
@@ -87,7 +101,6 @@ public class Pitcher_Com : MonoBehaviour
             TargetPos = DecideTargetPos(),
             Accuracy = DecideAccuracy()
         };
-
         //구조체 데이터 넘겨주기
         pitcherCtrl.RequestPitch(request);
     }
