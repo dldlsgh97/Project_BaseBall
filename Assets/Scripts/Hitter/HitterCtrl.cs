@@ -6,9 +6,12 @@ public class HitterCtrl : MonoBehaviour
 {
     [SerializeField]
     private Animator anim;
+
+    private HitterTimingGaugeUI timingUI;
     private void Start()
     {
         anim = GetComponent<Animator>();
+        timingUI = GameManager.instance.ui.Get<HitterTimingGaugeUI>();
     }
     public void OnHit()
     {
@@ -19,6 +22,7 @@ public class HitterCtrl : MonoBehaviour
     public void OnClickSwingBtn()
     {
         anim.Play("HitterSwing", 0, 0f);
+        timingUI.StopHitterCoroutine();
     }
 
 }
