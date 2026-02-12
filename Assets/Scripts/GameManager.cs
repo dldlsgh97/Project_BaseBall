@@ -16,16 +16,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    
-    void Start()
-    {
-        
-    }
-    void Update()
-    {
-        
-    }
-
     //게임모드에 따른 카메라 변경( 이후 다른 카메라 메니저로 이동예정)
     // 추후 audioListener 도 카메라에 따라 활성화 및 비활성화 필요
     [SerializeField]
