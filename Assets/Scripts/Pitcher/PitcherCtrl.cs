@@ -59,9 +59,9 @@ public class PitcherCtrl : MonoBehaviour
     {
         switch (State)
         {
-            case (PitchState.SelectingPitchType):
+            /*case (PitchState.SelectingPitchType):
                 gm.ui.Show<BallChoiceUI>(); //구종선택 UI
-                break;
+                break;*/
             case (PitchState.SelectingTarget):
                 Pitch();
                 break;
@@ -102,9 +102,9 @@ public class PitcherCtrl : MonoBehaviour
             }*/
         #endregion
 
-        gm.ui.Show<PitcherPitchZoneUI>();
+        /*gm.ui.Show<PitcherPitchZoneUI>();
         PitchType type = pitchUI.pitchType;
-        pitchZoneUI.StartPitch(Check, type);
+        pitchZoneUI.StartPitch(Check, type);*/
     }
     void Check(bool result)
     {
@@ -119,7 +119,7 @@ public class PitcherCtrl : MonoBehaviour
     {
         is_throw = false;
         ballScript.gameObject.SetActive(true);
-        ballScript.ThrowBall(pitchUI.pitchType,accuracyResult);
+        //ballScript.ThrowBall(pitchUI.pitchType,accuracyResult);
     }
     public void BallToTarget()//도착한 공 비활성화
     {

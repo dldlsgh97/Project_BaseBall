@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,8 @@ using UnityEngine;
 
 public class BallChoiceUI : UIBase
 {
-    public PitchType pitchType;
-
-    public PitcherCtrl pitcherCtrl;
+    //구종선택 이벤트
+    public Action<PitchType> OnPitchTypeSelected;
 
     public override void OnOpened(object[] param)
     {
@@ -16,9 +16,11 @@ public class BallChoiceUI : UIBase
 
     public override void OnClosed(object[] param)
     {
-        pitcherCtrl.State = PitchState.SelectingTarget;
         Debug.Log("BallChoiceUI Close");
     }
 
-    
+    public void SelectPitchType(PitchType type)
+    {
+        OnPitchTypeSelected?.Invoke(type);
+    }
 }
