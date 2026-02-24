@@ -1826,8 +1826,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a240ce240d0690b4aadcc607f97234f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pitchType: 0
-  pitcherCtrl: {fileID: 779020896}
 --- !u!1 &452954940
 GameObject:
   m_ObjectHideFlags: 0
@@ -4391,6 +4389,8 @@ Transform:
   m_Children:
   - {fileID: 751569971}
   - {fileID: 1439038818}
+  - {fileID: 2002226886}
+  - {fileID: 2061560094}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1192766747
@@ -5246,8 +5246,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 779020896}
-        m_TargetAssemblyTypeName: PitcherCtrl, Assembly-CSharp
+      - m_Target: {fileID: 2002226885}
+        m_TargetAssemblyTypeName: GameFlowManager, Assembly-CSharp
         m_MethodName: OnClickPitcherLogicStartBtn
         m_Mode: 1
         m_Arguments:
@@ -7358,6 +7358,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a984d9ccbffa124f96362899bedd6fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2002226884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2002226886}
+  - component: {fileID: 2002226885}
+  m_Layer: 0
+  m_Name: GameFlowmanager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2002226885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002226884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94519fbebf3cc5c489b201df99c541f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pitcherFlow: {fileID: 2061560095}
+--- !u!4 &2002226886
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002226884}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1185967786}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2012853251
 GameObject:
   m_ObjectHideFlags: 0
@@ -7464,6 +7509,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2061560093
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2061560094}
+  - component: {fileID: 2061560095}
+  m_Layer: 0
+  m_Name: PitcherFlowManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2061560094
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061560093}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1185967786}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2061560095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061560093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc46e9962e7113543a42bf4863a76766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiMan: {fileID: 751569970}
+  ballChoiceUI: {fileID: 0}
+  pitchZoneUI: {fileID: 0}
 --- !u!1 &2115261446
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class PitcherFlowManager : MonoBehaviour
 {
+    [Header("UIManager")]
     [SerializeField]
     private UIManager uiMan;
 
+    [Header("투수 로직 UI")]
     [SerializeField]
     private BallChoiceUI ballChoiceUI;
     [SerializeField]
     private PitcherPitchZoneUI pitchZoneUI;
 
+    [Header("투수 로직 변수")]
     private PitchType pitchtype;
     private Vector3 targetPos;
     private void Start()
@@ -20,7 +23,7 @@ public class PitcherFlowManager : MonoBehaviour
         pitchZoneUI = uiMan.Get<PitcherPitchZoneUI>();
     }
     //투구 로직 실행
-    void StartPitchFlow()
+    public void StartPitchFlow()
     {
         uiMan.Show<BallChoiceUI>();
         ballChoiceUI.OnPitchTypeSelected += SetPitchType;

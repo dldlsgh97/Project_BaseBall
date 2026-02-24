@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class PitcherPitchZoneUI : UIBase
 {
-    private Action<bool> onComplete; //콜백 저장용 변수
-
     [SerializeField] //탄착점 표시 UI(투수 전용)
     private RectTransform TargetUI;
     [SerializeField] //공 던지는 구역 UI(투수 전용)
@@ -27,12 +25,16 @@ public class PitcherPitchZoneUI : UIBase
     [SerializeField]
     private GameObject TestObj;
 
-    public void StartPitch(Action<bool> callback, PitchType type)
+    public override void OnOpened(object[] param)
     {
-        onComplete = callback;
-        SetPitchTypeText(type);
+        if(param != null && param.Length > 0)
+        {
+            PitchType type = (PitchType)param[0];
+            SetPitchTypeText(type);
+        }        
     }
-
+    public event Action<Vector3> OnPitchZoneSelected;
+    
     void SetPitchTypeText(PitchType type)
     {
         switch (type)
@@ -65,7 +67,8 @@ public class PitcherPitchZoneUI : UIBase
             
             if (Input.GetMouseButtonDown(0))//커서로 지정후 클릭시 확정
             {
-                onComplete?.Invoke(true); //콜백으로 결과 전달
+                OnPitchZoneSelected?.Invoke(WorldTargetPos);
+                //onComplete?.Invoke(true); //콜백으로 결과 전달
                 //State = PitchState.SetAccuracy;
             }
         }
