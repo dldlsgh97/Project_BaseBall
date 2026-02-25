@@ -62,14 +62,14 @@ public class PitcherCtrl : MonoBehaviour
             /*case (PitchState.SelectingPitchType):
                 gm.ui.Show<BallChoiceUI>(); //구종선택 UI
                 break;*/
-            case (PitchState.SelectingTarget):
+            /*case (PitchState.SelectingTarget):
                 Pitch();
                 break;
             case (PitchState.SetAccuracy):
                 //정확도 미니게임 로직 실행
                 gm.ui.Show<AccuracyMiniGameUI>();
                 accUI.StartAccuaryMiniGame(OnAccuracyResult);
-                break;
+                break;*/
             case (PitchState.Throwing):
                 ThrowBall();
                 State = PitchState.Idle;

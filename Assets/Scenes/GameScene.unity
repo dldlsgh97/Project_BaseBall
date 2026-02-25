@@ -3351,7 +3351,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &963194226
 AudioListener:
   m_ObjectHideFlags: 0
@@ -6358,7 +6358,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1615136405
 Transform:
   m_ObjectHideFlags: 0
@@ -7556,6 +7556,7 @@ MonoBehaviour:
   uiMan: {fileID: 751569970}
   ballChoiceUI: {fileID: 0}
   pitchZoneUI: {fileID: 0}
+  accUI: {fileID: 0}
 --- !u!1 &2115261446
 GameObject:
   m_ObjectHideFlags: 0

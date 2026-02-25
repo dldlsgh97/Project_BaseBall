@@ -6,7 +6,6 @@ using UnityEngine;
 public class PlayUI : UIBase
 {
 
-    //public static Action
     public override void OnOpened(object[] param)
     {
         Debug.Log("PlayUI Open");
