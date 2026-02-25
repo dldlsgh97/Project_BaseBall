@@ -42,6 +42,7 @@ public class Ball : MonoBehaviour
         }
         SetTargetPosition(accuracy);
         //타자 UI에 투구 시간 넘겨주기
+        // 여기서 넘겨주지말고 Flow쪽에서 넘겨주기
         if (hitterUI == null)
         {
             Debug.Log("hitterUI 오류");
@@ -142,6 +143,7 @@ public class Ball : MonoBehaviour
         }
 
         transform.position = StartPosition.position;
+        //이벤트로 변경
         pitcherCtrl.BallToTarget();
     }
     IEnumerator SliderBall()
@@ -171,6 +173,7 @@ public class Ball : MonoBehaviour
         }
 
         transform.position = StartPosition.position;
+        // 이벤트로 변경
         pitcherCtrl.BallToTarget();
     }
 }

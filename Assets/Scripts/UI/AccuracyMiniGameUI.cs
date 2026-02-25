@@ -144,4 +144,5 @@ public class AccuracyMiniGameUI : UIBase
         isInitAccuaracy = false;
         OnResultUIFinished?.Invoke();        
     }
+
 }

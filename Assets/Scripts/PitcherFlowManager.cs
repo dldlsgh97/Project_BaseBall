@@ -19,6 +19,7 @@ public class PitcherFlowManager : MonoBehaviour
     [Header("투수 로직 변수")]
     private PitchType pitchtype;
     private Vector3 targetPos;
+    private float accuracyResult;
 
     [Header("정확도 미니게임 변수")]
     private AccuracyConfig accData;
@@ -72,6 +73,7 @@ public class PitcherFlowManager : MonoBehaviour
     void CalculateAccuracy(float ratio)
     {
         AccuracyResult result = calculator.Calculate(ratio);
+        accuracyResult = calculator.CheckResult(result);
         accUI.StartResultLogic(result);
     }
     void EndAccuracyFlow()
