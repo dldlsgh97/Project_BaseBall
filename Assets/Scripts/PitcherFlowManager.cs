@@ -16,9 +16,9 @@ public class PitcherFlowManager : MonoBehaviour
     [SerializeField]
     private AccuracyMiniGameUI accUI;
 
-    [Header("투수 공 스크립트")]
+    [Header("투수 공던지기 실행 스크립트")]
     [SerializeField]
-    private Ball ball;
+    private PitcherExecutor executor;
 
     [Header("투수 로직 변수")]
     private PitchType pitchtype;
@@ -29,6 +29,10 @@ public class PitcherFlowManager : MonoBehaviour
     [Header("정확도 미니게임 변수")]
     private AccuracyConfig accData;
     private AccuracyCalculator calculator;
+
+    [Header("AI투수 로직 스크립트")]
+    [SerializeField]
+    private AIPitcher aIPitcher;
 
     private void Start()
     {
@@ -94,16 +98,29 @@ public class PitcherFlowManager : MonoBehaviour
     //공 던지기 로직
     void StartPitch()
     {
-        ball.gameObject.SetActive(true);
-        ball.ThrowBall(pitchtype, accuracyResult, targetPos);
-        ball.OnBallToTarget += EndPitch;
+        //투구 로직에서 정한 미니게임 구조체로 병합
+        PitchRequest request = new PitchRequest
+        {
+            PitchType = pitchtype,
+            TargetPos = targetPos,
+            Accuracy = accuracyResult
+        };
+        //일반 투구 로직
+        executor.OnPitchFinished += EndPitch;
+        executor.ExecutePitch(request);
+        
     }
 
     void EndPitch()
     {
-        //스트라이크 판정 스크립트 만들어서 이벤트로 넘기기로직 추가
-        ball.OnBallToTarget -= EndPitch;
-        ball.gameObject.SetActive(false);
-        ball.Offset_Target.SetActive(false);
+        executor.OnPitchFinished -= EndPitch;
+        //투구 종료 이후 로직
+    }
+
+    public void AIPitch()
+    {        
+        PitchRequest aiRequest = aIPitcher.SetAIPitcher();
+        executor.OnPitchFinished += EndPitch;
+        executor.ExecutePitch(aiRequest);
     }
 }

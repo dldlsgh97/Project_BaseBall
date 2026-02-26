@@ -13,7 +13,10 @@ public class GameFlowManager : MonoBehaviour
     {
         pitcherFlow.StartPitchFlow();
     }
-
+    public void OnClickAIPitcherBtn() //자동 투수 테스트 버튼로직
+    {
+        pitcherFlow.AIPitch();
+    }
     #endregion
 
 }
