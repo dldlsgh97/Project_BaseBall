@@ -96,7 +96,7 @@ public class AccuracyMiniGameUI : UIBase
             isMove = false;
             Debug.Log("시간 초과 실패");
             //시간초과 실패 -> ratio = 0
-            OnAccuracyMinigameRatio?.Invoke(0);
+            OnAccuracyMinigameRatio?.Invoke(-1);
         }
 
         //클릭시 정확도 판정

@@ -1620,12 +1620,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartPosition: {fileID: 1192766748}
   TargetPosition: {fileID: 1170455660}
-  pitcherCtrl: {fileID: 779020896}
-  ballSpeed: 0
-  midPosition: {x: 0, y: 0, z: 0}
-  curveAmount: 5
   targetPoint: {fileID: 1394380432}
   Offset_Target: {fileID: 1394380431}
+  midPosition: {x: 0, y: 0, z: 0}
+  curveAmount: 5
 --- !u!1 &383377274
 GameObject:
   m_ObjectHideFlags: 0
@@ -2820,7 +2818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a374633fd93283b4f91b2cc087ff4857, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
   ballScript: {fileID: 320181521}
   ballSpawnPoint: {fileID: 1192766748}
   pitcherCam: {fileID: 963194227}
@@ -2829,10 +2826,6 @@ MonoBehaviour:
   PitchSpeed: 10
   TargetPosition: {x: 0, y: 0, z: 0}
   hasTarget: 0
-  pitchUI: {fileID: 0}
-  accUI: {fileID: 0}
-  pitchZoneUI: {fileID: 0}
-  State: 0
   pitcherPitchZoneUI: {fileID: 0}
   targetUI_Cam: {fileID: 0}
 --- !u!1 &824505796
@@ -7557,6 +7550,7 @@ MonoBehaviour:
   ballChoiceUI: {fileID: 0}
   pitchZoneUI: {fileID: 0}
   accUI: {fileID: 0}
+  ball: {fileID: 320181521}
 --- !u!1 &2115261446
 GameObject:
   m_ObjectHideFlags: 0

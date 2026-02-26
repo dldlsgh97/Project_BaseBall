@@ -102,7 +102,7 @@ public class Pitcher_Com : MonoBehaviour
             Accuracy = DecideAccuracy()
         };
         //구조체 데이터 넘겨주기
-        pitcherCtrl.RequestPitch(request);
+        //pitcherCtrl.RequestPitch(request);
     }
 
     
