@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,7 +26,10 @@ public class HitterTimingGaugeUI : UIBase
     private bool isInitHitterTiming = false;
 
     private Coroutine timerCoroutine;
-    private void Start()
+
+    //타자 배팅타이밍 결과 넘겨주기용 이벤트
+    public Action<float> OnTimingFinished;
+    public override void OnOpened(object[] param)
     {
         rt = gauge.GetComponent<RectTransform>();
         gaugeWidth = rt.sizeDelta.x;
@@ -33,7 +37,12 @@ public class HitterTimingGaugeUI : UIBase
         gaugeLeftEdge = gaugeCenter - (gaugeWidth / 2);
         gaugeRightEdge = gaugeCenter + (gaugeWidth / 2);
         cursorWidth = cursor.sizeDelta.x;
+
+        //구속 변수 설정
+        ballTimer = (float)param[0];
+        StartHittingTimer();
     }
+
     public void StartHittingTimer()
     {
         if (!isInitHitterTiming)
@@ -51,11 +60,6 @@ public class HitterTimingGaugeUI : UIBase
         cursorStartPos = new Vector2(posX, cursor.anchoredPosition.y);
         cursorEndPos = new Vector2(endPosX, cursor.anchoredPosition.y);
         cursor.anchoredPosition = cursorStartPos;
-    }
-    public void SetCursorSpeed(float t)
-    {
-        //공의 구속에따라 커서 속도 결정
-        ballTimer = t;        
     }
 
     IEnumerator MoveCursor() //커서를 움직이는 코루틴
@@ -76,8 +80,8 @@ public class HitterTimingGaugeUI : UIBase
         isInitHitterTiming = false;
         float cursorX = cursor.anchoredPosition.x;
         timingRatio = (cursorX - gaugeLeftEdge) / gaugeWidth;
-        Debug.Log(timingRatio);
-        //타자 배팅타이밍 결과 넘겨주기용 코루틴
+        //타자 배팅타이밍 결과 넘겨주기용 이벤트
+        OnTimingFinished?.Invoke(timingRatio);
         yield return null;
     }
 

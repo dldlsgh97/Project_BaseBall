@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,11 +8,10 @@ public class HitterCtrl : MonoBehaviour
     [SerializeField]
     private Animator anim;
 
-    private HitterTimingGaugeUI timingUI;
+    public Action OnSwingBat;
     private void Start()
     {
-        anim = GetComponent<Animator>();
-        timingUI = GameManager.instance.ui.Get<HitterTimingGaugeUI>();
+        anim = GetComponent<Animator>();       
     }
     public void OnHit()
     {
@@ -22,7 +22,8 @@ public class HitterCtrl : MonoBehaviour
     public void OnClickSwingBtn()
     {
         anim.Play("HitterSwing", 0, 0f);
-        timingUI.StopHitterCoroutine();
+        OnSwingBat?.Invoke();
+        //timingUI.StopHitterCoroutine();
     }
 
 }

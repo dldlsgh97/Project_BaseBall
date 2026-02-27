@@ -29,12 +29,9 @@ public class Ball : MonoBehaviour
     [Header("이벤트")]
     //탄착지 도착 트리거 이벤트
     public Action OnBallToTarget;
-   
-    //타자 UI에 구속스텟 넘겨주기 이벤트
-    public Action<float> OnCurveDuration;
 
-    //타자 타이머 스타트 트리거 이벤트
-    public Action OnStartHittingTimer;
+    //타자 타이머 스타트 트리거 이벤트(투구 시간도 같이 넘김)
+    public Action<float> OnStartHittingTimer;
     
     private void OnEnable()
     {
@@ -48,23 +45,20 @@ public class Ball : MonoBehaviour
             TargetPosition.transform.position = targetPos.Value;
         }
         SetTargetPosition(accuracy);
-        
         // 여기서 넘겨주지말고 Flow쪽에서 넘겨주기
-        //타자 UI에 투구 시간 넘겨주기
-        OnCurveDuration?.Invoke(curveDuration);
-
+        Debug.Log("Ball" + curveDuration);
         switch (type)
         {
             case PitchType.FastBall:
-                OnStartHittingTimer?.Invoke();
+                OnStartHittingTimer?.Invoke(curveDuration);
                 StartCoroutine(FastBall());
                 break;
             case PitchType.CurveBall:
-                OnStartHittingTimer?.Invoke();
+                OnStartHittingTimer?.Invoke(curveDuration);
                 StartCoroutine(CurveBall());
                 break;
             case PitchType.SliderBall:
-                OnStartHittingTimer?.Invoke();
+                OnStartHittingTimer?.Invoke(curveDuration);
                 StartCoroutine(SliderBall());
                 break;
         }

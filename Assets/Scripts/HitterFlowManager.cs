@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class HitterFlowManager : MonoBehaviour
 {
+    [Header("UIManager")]
+    [SerializeField]
+    private UIManager uiMan;
+
     [Header("공 스크립트")]
     [SerializeField]
     private Ball ball;
@@ -11,12 +15,19 @@ public class HitterFlowManager : MonoBehaviour
     [Header("타자 로직 UI")]
     [SerializeField]
     private HitterTimingGaugeUI timingUI;
-    void Start()
+
+
+    private void Start()
     {
-        
+        timingUI = uiMan.Get<HitterTimingGaugeUI>();
     }
-    void Update()
+    public void HitterLogicStart(float duration)
     {
-        
+        uiMan.Show<HitterTimingGaugeUI>(duration);
+    }
+
+    public void HitterLogicEnd()
+    {
+        uiMan.Hide<HitterTimingGaugeUI>();
     }
 }

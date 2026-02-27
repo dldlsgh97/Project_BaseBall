@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,6 +34,11 @@ public class PitcherFlowManager : MonoBehaviour
     [Header("AI투수 로직 스크립트")]
     [SerializeField]
     private AIPitcher aIPitcher;
+
+    //타자 UI타이밍 전달 이벤트
+    public Action<float> OnStartHittingTimer;
+
+    public Action PitchEnd;
 
     private void Start()
     {
@@ -98,6 +104,8 @@ public class PitcherFlowManager : MonoBehaviour
     //공 던지기 로직
     void StartPitch()
     {
+        //타자 UI로 데이터 던지는 이벤트
+        executor.OnStartHittingTimer += StartHitterTiming;
         //투구 로직에서 정한 미니게임 구조체로 병합
         PitchRequest request = new PitchRequest
         {
@@ -107,6 +115,8 @@ public class PitcherFlowManager : MonoBehaviour
         };
         //일반 투구 로직
         executor.OnPitchFinished += EndPitch;
+
+        
         executor.ExecutePitch(request);
         
     }
@@ -114,13 +124,25 @@ public class PitcherFlowManager : MonoBehaviour
     void EndPitch()
     {
         executor.OnPitchFinished -= EndPitch;
+        executor.OnStartHittingTimer -= StartHitterTiming;
         //투구 종료 이후 로직
+        PitchEnd?.Invoke();
     }
 
     public void AIPitch()
-    {        
+    {
+        executor.OnStartHittingTimer += StartHitterTiming;//중복방지
+        //타자 UI로 데이터 던지는 이벤트
+        executor.OnStartHittingTimer += StartHitterTiming;
         PitchRequest aiRequest = aIPitcher.SetAIPitcher();
         executor.OnPitchFinished += EndPitch;
         executor.ExecutePitch(aiRequest);
     }
+
+    void StartHitterTiming(float duration)
+    {
+        Debug.Log("PitcherFlow Event");
+        OnStartHittingTimer?.Invoke(duration);
+    }
+
 }
