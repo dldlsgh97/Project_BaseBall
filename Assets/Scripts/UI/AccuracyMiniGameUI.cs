@@ -7,8 +7,6 @@ using TMPro;
 
 public class AccuracyMiniGameUI : UIBase
 {
-    private Action<AccuracyResult> onComplete;//콜백 저장용 변수
-
     [Header("정확도 관련")]
     [SerializeField]
     private RectTransform arrow;
@@ -26,23 +24,8 @@ public class AccuracyMiniGameUI : UIBase
     float timer = 0f;
     private bool isInitAccuaracy = false;
 
-    [Header("정확도 구간")]
-    private float perfectStartRatio;
-    private float perfectEndRatio;
-
-    private float goodStartRatio;
-    private float goodEndRatio;
-
-    private float veryGoodStartRatio;
-    private float veryGoodEndRatio;
-
-    private float badStartRatio = 0;
-    private float badEndRatio;
-
-    private float perfectRatio = 0.1f;
-    private float veryGoodRatio = 0.3f;
-    private float goodRatio = 0.5f;
-    private float badRatio = 0.1f;
+    //따로 만들어놓은 정확도 비율 스크립트
+    private AccuracyConfig accData;
 
     private float maxDuration = 2f; //커서 왕복 시간
 
@@ -57,8 +40,24 @@ public class AccuracyMiniGameUI : UIBase
     [SerializeField]
     private TextMeshProUGUI AccuaracyResultText;
 
-    void Awake()
+    //정확도 미니게임 결과 넘겨주는 이벤트
+    public Action<float> OnAccuracyMinigameRatio;
+
+    //정확도 UI에 표시로직 끝났는지 확인하는 이벤트
+    public Action OnResultUIFinished;
+
+    public override void OnOpened(object[] param)
     {
+        Debug.Log("정확도 OnOpened");
+        accData = (AccuracyConfig)param[0];
+        StartUI();
+        StartAccuaryMiniGame();
+        timer = 0;
+    }
+
+    void StartUI()
+    {
+        Debug.Log("정확도 미니게임 OnEnable");
         rt = gauge.GetComponent<RectTransform>();
         gaugeWidth = rt.sizeDelta.x;
         float gaugeCenter = rt.anchoredPosition.x;
@@ -67,47 +66,9 @@ public class AccuracyMiniGameUI : UIBase
         gaugeRightEdge = gaugeCenter + (gaugeWidth / 2);
         arrowWidth = arrow.sizeDelta.x;
         arrowRange = (gaugeRightEdge - gaugeLeftEdge) - arrowWidth;
-        Debug.Log("정확도 미니게임 Awake");
-        timer = 0;
-        SetAccuaryRatio();
     }
-    /*public void StartAccuaryMiniGame() // 정확도 미니게임 로직 및 기능추가
+    public void StartAccuaryMiniGame()
     {
-        Debug.Log("정확도 미니게임 로직");
-        if (!isInitAccuaracy)
-        {
-            InitAccuracyMiniGame();
-            isInitAccuaracy = true;
-        }
-
-
-        timer += Time.deltaTime;
-        isMove = true;
-        float arrowX = 0;
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            isMove = false;
-            arrowX = arrow.anchoredPosition.x;
-            float ratio = (arrowX - gaugeLeftEdge) / gaugeWidth;
-            Debug.Log($"X : {ratio}");
-            CheckAccuracy(ratio);
-            //State = PitchState.Throwing;
-        }
-
-        //화살표 이동로직
-        if (isMove)
-        {
-            float posX = Mathf.PingPong(timer * arrowSpeed, arrowRange) + gaugeLeftEdge + (arrowWidth / 2);
-            arrow.anchoredPosition = new Vector2(posX, arrow.anchoredPosition.y);
-        }
-
-    }*/
-
-    
-    public void StartAccuaryMiniGame(Action<AccuracyResult> callback)//정확도 미니게임 콜백함수로 변경
-    {
-        onComplete = callback;
         Debug.Log("정확도 미니게임 시작");
         if (!isInitAccuaracy)
         {
@@ -126,8 +87,7 @@ public class AccuracyMiniGameUI : UIBase
 
         //화살표 이동 로직 (시간 기반으로 한번만 왕복)
         float durationRatio = Mathf.PingPong(timer, halfDuration) / halfDuration;
-        float posX = Mathf.Lerp(gaugeLeftEdge + (arrowWidth / 2), gaugeLeftEdge + arrowRange + (arrowWidth / 2), durationRatio);       
-        //float posX = Mathf.PingPong(timer * arrowSpeed, arrowRange) + gaugeLeftEdge + (arrowWidth / 2);
+        float posX = Mathf.Lerp(gaugeLeftEdge + (arrowWidth / 2), gaugeLeftEdge + arrowRange + (arrowWidth / 2), durationRatio);             
         arrow.anchoredPosition = new Vector2(posX, arrow.anchoredPosition.y);
 
         //시간초과 자동 실패
@@ -135,7 +95,8 @@ public class AccuracyMiniGameUI : UIBase
         {
             isMove = false;
             Debug.Log("시간 초과 실패");
-            StartCoroutine(ShowResultAndClose(AccuracyResult.Miss));
+            //시간초과 실패 -> ratio = 0
+            OnAccuracyMinigameRatio?.Invoke(-1);
         }
 
         //클릭시 정확도 판정
@@ -145,10 +106,8 @@ public class AccuracyMiniGameUI : UIBase
             float arrowX = arrow.anchoredPosition.x;
             float ratio = (arrowX - gaugeLeftEdge) / gaugeWidth;
 
-            var result = CheckAccuracy(ratio); //정확도 판단
-            Debug.Log(result);
-            StartCoroutine(ShowResultAndClose(result));
-           
+            //정확도 비율만 이벤트로 뿌려줌(정확도 판단 X)
+            OnAccuracyMinigameRatio?.Invoke(ratio);
         }   
     }
     void InitAccuracyMiniGame() //정확도 미니게임 화살표 초기화 및 타이머변수 초기화 로직
@@ -156,10 +115,10 @@ public class AccuracyMiniGameUI : UIBase
         Debug.Log("정확도 미니게임 초기화");        
         // 초기화
         timer = 0;
-        SetZoneUISize(perfectZone, perfectStartRatio, perfectEndRatio);
-        SetZoneUISize(veryGoodZone, veryGoodStartRatio, veryGoodEndRatio);
-        SetZoneUISize(goodZone, goodStartRatio, goodEndRatio);
-        SetZoneUISize(badZone, badStartRatio, badEndRatio);
+        SetZoneUISize(perfectZone, accData.perfectStartRatio, accData.perfectEndRatio);
+        SetZoneUISize(veryGoodZone, accData.veryGoodStartRatio, accData.veryGoodEndRatio);
+        SetZoneUISize(goodZone, accData.goodStartRatio, accData.goodEndRatio);
+        SetZoneUISize(badZone, accData.badStartRatio, accData.badEndRatio);
         float posX = gaugeLeftEdge + (arrowWidth / 2);
         arrow.anchoredPosition = new Vector2(posX, arrow.anchoredPosition.y);
         AccuaracyResultText.text = "";
@@ -173,47 +132,17 @@ public class AccuracyMiniGameUI : UIBase
         zoneRT.sizeDelta = new Vector2(zoneWidth, zoneRT.sizeDelta.y);
         zoneRT.anchoredPosition = new Vector2(centerX, zoneRT.anchoredPosition.y);
     }
-    void SetAccuaryRatio() //정확도 구간 비율에 따른 구간 시작점과 끝점 설정
-    {
-        badEndRatio = badStartRatio + badRatio;
-        goodStartRatio = badEndRatio;
-        goodEndRatio = goodStartRatio + goodRatio;
-        veryGoodStartRatio = goodEndRatio;
-        veryGoodEndRatio = veryGoodStartRatio + veryGoodRatio;
-        perfectStartRatio = veryGoodEndRatio;
-        perfectEndRatio = perfectStartRatio + perfectRatio;
-    }
-    AccuracyResult CheckAccuracy(float arrowX)//정확도 미니게임 구간체크 로직
-    {
-        if (arrowX > perfectStartRatio && arrowX <= perfectEndRatio)
-        {
-            return AccuracyResult.Perfect;
-        }
-        else if (arrowX > veryGoodStartRatio && arrowX <= veryGoodEndRatio)
-        {
-            return AccuracyResult.VeryGood;
-        }
-        else if (arrowX > goodStartRatio && arrowX <= goodEndRatio)
-        {
-            return AccuracyResult.Good;
-        }
-        else if (arrowX > badStartRatio && arrowX <= badEndRatio)
-        {
-            return AccuracyResult.Bad;
-        }
-        else
-        {
-            return AccuracyResult.Miss;
-        }
-    }
 
+    public void StartResultLogic(AccuracyResult result)
+    {
+        StartCoroutine(ShowResultAndClose(result));
+    }
     private IEnumerator ShowResultAndClose(AccuracyResult result) //UI텍스트 표시딜레이용 코루틴
     {
         AccuaracyResultText.text = result.ToString();
-        yield return new WaitForSeconds(0.5f);
-
-        onComplete?.Invoke(result); //콜백으로 결과 전달
+        yield return new WaitForSeconds(0.5f);        
         isInitAccuaracy = false;
-        uiMan.Hide<AccuracyMiniGameUI>();//미니게임 창 닫기
+        OnResultUIFinished?.Invoke();        
     }
+
 }

@@ -1,17 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
+    [Header("탄착점 위치값")]
     [SerializeField]
     private Transform StartPosition;
     [SerializeField]
     private Transform TargetPosition; //정확도 오차없는 탄착점
+
+    [Header("탄착점 위치 오브젝트")]
     [SerializeField]
-    private PitcherCtrl pitcherCtrl;
+    private Transform targetPoint; //정확도 오차적용된 탄착점
     [SerializeField]
-    private float ballSpeed;
+    public GameObject Offset_Target;
+
+    [Header("커브 관련 변수")]
     [SerializeField]
     private Vector3 midPosition;
 
@@ -20,18 +26,16 @@ public class Ball : MonoBehaviour
     private float curveDuration = 1.0f; //구속 스텟 (수치가 작아질수록 도착시간이 빨라짐)
     public float curveAmount = 2.0f;
 
-    [SerializeField]
-    private Transform targetPoint; //정확도 오차적용된 탄착점
-    [SerializeField]
-    public GameObject Offset_Target;
+    [Header("이벤트")]
+    //탄착지 도착 트리거 이벤트
+    public Action OnBallToTarget;
 
-    private HitterTimingGaugeUI hitterUI;
-
-    private void Awake()
+    //타자 타이머 스타트 트리거 이벤트(투구 시간도 같이 넘김)
+    public Action<float> OnStartHittingTimer;
+    
+    private void OnEnable()
     {
         gameObject.transform.position = StartPosition.position;
-        ballSpeed = pitcherCtrl.PitchSpeed;
-        hitterUI = GameManager.instance.ui.Get<HitterTimingGaugeUI>();
     }
 
     public void ThrowBall(PitchType type, float accuracy,Vector3? targetPos = null)
@@ -41,24 +45,20 @@ public class Ball : MonoBehaviour
             TargetPosition.transform.position = targetPos.Value;
         }
         SetTargetPosition(accuracy);
-        //타자 UI에 투구 시간 넘겨주기
-        if (hitterUI == null)
-        {
-            Debug.Log("hitterUI 오류");
-        }
-        hitterUI.SetCursorSpeed(curveDuration);
+        // 여기서 넘겨주지말고 Flow쪽에서 넘겨주기
+        Debug.Log("Ball" + curveDuration);
         switch (type)
         {
             case PitchType.FastBall:
-                hitterUI.StartHittingTimer();
+                OnStartHittingTimer?.Invoke(curveDuration);
                 StartCoroutine(FastBall());
                 break;
             case PitchType.CurveBall:
-                hitterUI.StartHittingTimer();
+                OnStartHittingTimer?.Invoke(curveDuration);
                 StartCoroutine(CurveBall());
                 break;
             case PitchType.SliderBall:
-                hitterUI.StartHittingTimer();
+                OnStartHittingTimer?.Invoke(curveDuration);
                 StartCoroutine(SliderBall());
                 break;
         }
@@ -67,14 +67,14 @@ public class Ball : MonoBehaviour
     void SetTargetPosition(float accuracy)
     {
         targetPoint.transform.position = TargetPosition.position;
-        float horizontalOffset = Random.Range(0, accuracy); //가로 오차 랜덤값
-        float verticalOffset = Random.Range(0, accuracy); //세로 오차 랜덤값
+        float horizontalOffset = UnityEngine.Random.Range(0, accuracy); //가로 오차 랜덤값
+        float verticalOffset = UnityEngine.Random.Range(0, accuracy); //세로 오차 랜덤값
         
         float signX = 1; //가로오차 +- 부호
         float signY = 1; //세로오차 +- 부호
 
-        if(Random.value < 0.5f) signX = -1;
-        if (Random.value < 0.5f) signY = -1;
+        if(UnityEngine.Random.value < 0.5f) signX = -1;
+        if (UnityEngine.Random.value < 0.5f) signY = -1;
         Vector3 start = StartPosition.position;
         Vector3 end = TargetPosition.position;
 
@@ -112,7 +112,8 @@ public class Ball : MonoBehaviour
         }
         #endregion
         transform.position = StartPosition.position;
-        pitcherCtrl.BallToTarget();
+        //종료 트리거 이벤트
+        OnBallToTarget?.Invoke();
     }
 
     IEnumerator CurveBall()
@@ -142,7 +143,8 @@ public class Ball : MonoBehaviour
         }
 
         transform.position = StartPosition.position;
-        pitcherCtrl.BallToTarget();
+        //종료 트리거 이벤트
+        OnBallToTarget?.Invoke();
     }
     IEnumerator SliderBall()
     {
@@ -171,6 +173,7 @@ public class Ball : MonoBehaviour
         }
 
         transform.position = StartPosition.position;
-        pitcherCtrl.BallToTarget();
+        //종료 트리거 이벤트
+        OnBallToTarget?.Invoke();
     }
 }

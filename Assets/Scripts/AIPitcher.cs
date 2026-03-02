@@ -2,26 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pitcher_Com : MonoBehaviour
+public class AIPitcher : MonoBehaviour
 {
-    //타자모드에서 투수가 공을 던져주는 로직
-    [SerializeField]
-    private PitcherCtrl pitcherCtrl;
-
     [SerializeField]
     private RectTransform PitchZone;
-
-    //임시 정확도 배율
-    private float perfectRatio = 1f;
-    private float veryGoodRatio = 0.9f;
-    private float goodRatio = 0.6f;
-    private float badRatio = 0.1f;
 
     private PitchZoneUI pitchZoneUI;
 
     private void Start()
     {
-        //pitchZoneSize = PitchZone.GetComponent<Renderer>().bounds.size;
         pitchZoneUI = GameManager.instance.ui.Get<PitchZoneUI>();
     }
     private PitchType DecidePitchType()
@@ -63,36 +52,13 @@ public class Pitcher_Com : MonoBehaviour
         //탄착점 출력
         return new Vector3(randomX,randomY,z);
     }
-    private AccuracyResult DecideAccuracy()
+    private float DecideAccuracy()
     {
-        //정확도 지정
-        float rand = Random.value;
-        AccuracyResult result = AccuracyResult.Bad;
-        
-        if(rand < badRatio)
-        {
-            result = AccuracyResult.Bad;
-        }
-        else if(rand < goodRatio)
-        {
-            result = AccuracyResult.Good;
-        }
-        else if(rand < veryGoodRatio)
-        {
-            result = AccuracyResult.VeryGood;
-        }
-        else if(rand < perfectRatio)
-        {
-            result = AccuracyResult.Perfect;
-        }
-        else
-        {
-            result = AccuracyResult.Miss;
-        }
-       
-        return result;
+        //정확도 지정 -> 0~1사이의 실수
+        float rand = Random.value;               
+        return rand;
     }
-    public void OnClickAIPitcherBtn()
+    public PitchRequest SetAIPitcher()
     {
         //구조체 데이터 설정
         PitchRequest request = new PitchRequest
@@ -102,7 +68,7 @@ public class Pitcher_Com : MonoBehaviour
             Accuracy = DecideAccuracy()
         };
         //구조체 데이터 넘겨주기
-        pitcherCtrl.RequestPitch(request);
+        return request;
     }
 
     

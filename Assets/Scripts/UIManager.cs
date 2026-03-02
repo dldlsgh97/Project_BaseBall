@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"{type} UI 가 등록되어 있습니다");
+            Debug.Log($"Reister{type} UI 가 등록되어 있습니다");
         }
     }
 
