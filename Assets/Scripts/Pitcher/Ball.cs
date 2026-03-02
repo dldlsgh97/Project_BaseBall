@@ -29,7 +29,7 @@ public class Ball : MonoBehaviour
     [Header("이벤트")]
     //탄착지 도착 트리거 이벤트
     public Action OnBallToTarget;
-
+    public Action<Vector3> OnOffsetTargetPosition;
     //타자 타이머 스타트 트리거 이벤트(투구 시간도 같이 넘김)
     public Action<float> OnStartHittingTimer;
     
@@ -46,7 +46,6 @@ public class Ball : MonoBehaviour
         }
         SetTargetPosition(accuracy);
         // 여기서 넘겨주지말고 Flow쪽에서 넘겨주기
-        Debug.Log("Ball" + curveDuration);
         switch (type)
         {
             case PitchType.FastBall:
@@ -83,6 +82,7 @@ public class Ball : MonoBehaviour
         Vector3 offSet = (right * horizontalOffset * signX) + (Vector3.up * verticalOffset * signY);
 
         targetPoint.position += offSet;
+        OnOffsetTargetPosition?.Invoke(targetPoint.position);
         Offset_Target.SetActive(true);
         Offset_Target.transform.position = targetPoint.position;
     }
