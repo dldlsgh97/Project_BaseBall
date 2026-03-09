@@ -35,11 +35,15 @@ public class GameFlowManager : MonoBehaviour
     {
         pitcherFlow.OnStartHittingTimer += StartHitterTimingLogic;
         pitcherFlow.PitchEnd += EndPitch;
+        //투수 판정 받아오기 이벤트 구독
+        pitcherFlow.OnPitcherJudgeResult += GetPitcherJudge;
     }
     private void OnDisable()//이벤트 구독 해제
     {
         pitcherFlow.OnStartHittingTimer -= StartHitterTimingLogic;
         pitcherFlow.PitchEnd -= EndPitch;
+
+        pitcherFlow.OnPitcherJudgeResult -= GetPitcherJudge;
     }
 
     #region 테스트용 로직
@@ -64,5 +68,15 @@ public class GameFlowManager : MonoBehaviour
         //judgeManager.JudgeStrikeLogic();
         //타자 UI끄기
         hitterFlow.HitterLogicEnd();
+    }
+
+    void GetPitcherJudge(ZoneResult result)
+    {
+
+    }
+
+    void GetHitterJudge(HitterTimingResult result)
+    {
+
     }
 }

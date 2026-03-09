@@ -32,3 +32,31 @@ public enum AccuracyResult
     Bad,
     Miss
 }
+
+//투구 판정(투수 판정) 결과 enum
+public enum ZoneResult
+{
+    Strike,
+    Ball,
+    DeadBall
+}
+
+//투구 판정(타자 판정) 결과 enum
+public enum HitterTimingResult
+{
+    Fast,
+    Late,
+    Perfect,
+    Miss
+}
+
+//투구 판정(타자 + 투수 판정 -> 최종 투구 판정) 결과 enum
+public enum PitchResult
+{
+    Strike,
+    Ball,
+    Foul,
+    Hit,
+    HomeRun,
+    Out
+}

@@ -42,6 +42,8 @@ public class PitcherFlowManager : MonoBehaviour
 
     [SerializeField]
     private PitcherJudge pitcherJudge;
+
+    public Action<ZoneResult> OnPitcherJudgeResult;
     private void Start()
     {
         ballChoiceUI = uiMan.Get<BallChoiceUI>();
@@ -168,7 +170,9 @@ public class PitcherFlowManager : MonoBehaviour
     //스트라이크 판정
     void SetStrikeJudge(Vector3 pos)
     {
-        pitcherJudge.JudgeStrike(pos);
+        ZoneResult result = pitcherJudge.JudgeStrike(pos);
+        OnPitcherJudgeResult?.Invoke(result);
     }
+
 
 }

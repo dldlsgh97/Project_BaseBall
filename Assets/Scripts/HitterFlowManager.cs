@@ -16,18 +16,29 @@ public class HitterFlowManager : MonoBehaviour
     [SerializeField]
     private HitterTimingGaugeUI timingUI;
 
+    [Header("타자 정확도 변수")]
+    private HitterAccuracyConfig hitterAccData;
 
     private void Start()
     {
         timingUI = uiMan.Get<HitterTimingGaugeUI>();
+        //타자 타이밍 데이터 생성
+        hitterAccData = new HitterAccuracyConfig();
     }
     public void HitterLogicStart(float duration)
     {
-        uiMan.Show<HitterTimingGaugeUI>(duration);
+        //정확도 데이터와 구속변수 넘겨주기
+        uiMan.Show<HitterTimingGaugeUI>(new object[] { duration, hitterAccData });
     }
 
     public void HitterLogicEnd()
     {
         uiMan.Hide<HitterTimingGaugeUI>();
+    }
+
+    //타자 정확도 판정
+    void SetHitterJudge()
+    {
+
     }
 }
