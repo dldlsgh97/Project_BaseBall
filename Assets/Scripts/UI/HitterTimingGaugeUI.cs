@@ -99,6 +99,12 @@ public class HitterTimingGaugeUI : UIBase
         }        
     }
 
+    //타격버튼 클릭시 코루틴 정지
+    public void StopHitterCoroutine()
+    {
+        StartCoroutine(HitterTimingResult());
+        StopCoroutine(timerCoroutine);
+    }
     IEnumerator HitterTimingResult()
     {
         isInitHitterTiming = false;
@@ -109,12 +115,8 @@ public class HitterTimingGaugeUI : UIBase
         yield return null;
     }
 
-    //타격버튼 클릭시 코루틴 정지
-    public void StopHitterCoroutine()
-    {
-        StartCoroutine(HitterTimingResult());
-        StopCoroutine(timerCoroutine);
-    }
+   
+    
 
     //타이밍 UI구간 설정 
     void SetZoneUISize(RectTransform zoneRt, float startRatio,float endRatio)

@@ -35,8 +35,9 @@ public class GameFlowManager : MonoBehaviour
     {
         pitcherFlow.OnStartHittingTimer += StartHitterTimingLogic;
         pitcherFlow.PitchEnd += EndPitch;
-        //투수 판정 받아오기 이벤트 구독
+        //투수, 타자 판정 받아오기 이벤트 구독
         pitcherFlow.OnPitcherJudgeResult += GetPitcherJudge;
+        hitterFlow.OnHitterAccuracyResult += GetHitterJudge;
     }
     private void OnDisable()//이벤트 구독 해제
     {
@@ -44,6 +45,7 @@ public class GameFlowManager : MonoBehaviour
         pitcherFlow.PitchEnd -= EndPitch;
 
         pitcherFlow.OnPitcherJudgeResult -= GetPitcherJudge;
+        hitterFlow.OnHitterAccuracyResult -= GetHitterJudge;
     }
 
     #region 테스트용 로직
