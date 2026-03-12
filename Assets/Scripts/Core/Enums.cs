@@ -47,16 +47,14 @@ public enum HitterTimingResult
     Fast,
     Late,
     Perfect,
-    Miss
+    Miss,
+    None //스윙 X
 }
 
 //투구 판정(타자 + 투수 판정 -> 최종 투구 판정) 결과 enum
-public enum PitchResult
+public enum FinalJudgeResult
 {
     Strike,
     Ball,
-    Foul,
-    Hit,
-    HomeRun,
-    Out
+    Hit
 }

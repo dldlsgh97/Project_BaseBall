@@ -17,10 +17,21 @@ public class GameFlowManager : MonoBehaviour
     //탄착점 z값을 위한 Zone 변수
     [SerializeField]
     private Transform zonePos;
+
+    //투수 판단값
+    private ZoneResult pitcherAccResult;
+    private bool isPitcherResult = false;
+
+    //타자 판단값
+    private HitterTimingResult hitterAccResult;
+    private bool isHitterResult = false;
+
+    //최종 판단 계산용 스크립트
+    private FinalJudge finalJudge;
     private void Start()
     {
         pitchZoneUI = uiMan.Get<PitchZoneUI>();
-
+        finalJudge = new FinalJudge();
         //Zone 데이터 가져오기
         Rect pitchRect = pitchZoneUI.GetPitchZoneWorldRect();
         Rect strikeRect = pitchZoneUI.GetStrikeZoneWorldRect();
@@ -72,13 +83,30 @@ public class GameFlowManager : MonoBehaviour
         hitterFlow.HitterLogicEnd();
     }
 
+    //투수 판단값 가져오고 최종 판단계산로직으로 넘김
     void GetPitcherJudge(ZoneResult result)
     {
-
+        pitcherAccResult = result;
+        isPitcherResult = true;
+        TryFinalJudge();
     }
 
+    //타자 판단값 가져오고 최종 판단계산로직으로 넘김
     void GetHitterJudge(HitterTimingResult result)
     {
-
+        hitterAccResult = result;
+        isHitterResult = true;
+        TryFinalJudge();
     }
+
+    //최종 판단 계산 스크립트 호출
+    void TryFinalJudge()
+    {
+        if(isHitterResult && isPitcherResult)
+        {
+            finalJudge.CalculateFinalJudge(pitcherAccResult, hitterAccResult);
+        }
+    }
+
+    
 }

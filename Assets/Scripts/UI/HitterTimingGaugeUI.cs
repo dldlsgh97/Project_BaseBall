@@ -115,9 +115,6 @@ public class HitterTimingGaugeUI : UIBase
         yield return null;
     }
 
-   
-    
-
     //타이밍 UI구간 설정 
     void SetZoneUISize(RectTransform zoneRt, float startRatio,float endRatio)
     {
