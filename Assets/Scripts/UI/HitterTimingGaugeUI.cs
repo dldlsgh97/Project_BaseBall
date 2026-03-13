@@ -89,14 +89,16 @@ public class HitterTimingGaugeUI : UIBase
     IEnumerator MoveCursor() //커서를 움직이는 코루틴
     {
         float elapsed = 0f;
-        while (elapsed < gaugeTimer)
+        while (elapsed <= gaugeTimer)
         {
             elapsed += Time.deltaTime;
             float time = elapsed / gaugeTimer;
             Vector2 pos = Vector2.Lerp(cursorStartPos, cursorEndPos, time);
             cursor.anchoredPosition = pos;
             yield return null;
-        }        
+        }
+        //스윙안했을때
+        OnTimingFinished?.Invoke(-1);
     }
 
     //타격버튼 클릭시 코루틴 정지

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PitcherFlowManager : MonoBehaviour
@@ -16,6 +17,9 @@ public class PitcherFlowManager : MonoBehaviour
     private PitcherPitchZoneUI pitchZoneUI;
     [SerializeField]
     private AccuracyMiniGameUI accUI;
+    //최종 판단 표시 텍스트
+    [SerializeField]
+    private TextMeshProUGUI finalJudgeText;
 
     [Header("투수 공던지기 실행 스크립트")]
     [SerializeField]
@@ -174,5 +178,17 @@ public class PitcherFlowManager : MonoBehaviour
         OnPitcherJudgeResult?.Invoke(result);
     }
 
+    //최종 판단 UI에 표시
+    public void ShowJudgeResult(FinalJudgeResult result)
+    {
+        finalJudgeText.gameObject.SetActive(true);
+        finalJudgeText.text = result.ToString();
+    }
+
+    public void HideJudgeResult()
+    {
+        finalJudgeText.text = "";
+        finalJudgeText.gameObject.SetActive(false);
+    }
 
 }

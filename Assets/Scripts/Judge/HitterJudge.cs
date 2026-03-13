@@ -14,11 +14,12 @@ public class HitterJudge
     public HitterTimingResult HitterTimingJudge(float ratio)
     {
         //타이밍 배율가지고 정확도 체크
+        if (ratio == -1) return HitterTimingResult.None;
         if (ratio < hitterAccData.missLeftEnd) return HitterTimingResult.Miss;
         if (ratio < hitterAccData.fastEnd) return HitterTimingResult.Fast;
         if (ratio < hitterAccData.perfectEnd) return HitterTimingResult.Perfect;
         if (ratio < hitterAccData.slowEnd) return HitterTimingResult.Late;
-
+        
 
         return HitterTimingResult.Miss;
     }

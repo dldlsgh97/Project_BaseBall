@@ -29,10 +29,22 @@ public class FinalJudge
                 return FinalJudgeResult.Strike;
             }
         }
+        else if(pitcher == ZoneResult.DeadBall)
+        {
+            if(hitter == HitterTimingResult.None)
+            {
+                return FinalJudgeResult.DeadBall;
+            }
+            else
+            {
+                return FinalJudgeResult.Strike;
+            }
+            
+        }
         else
         {
-            //오류
-            return FinalJudgeResult.Hit;
+            //오류출력용
+            return FinalJudgeResult.Error;
         }
         
     }

@@ -104,9 +104,31 @@ public class GameFlowManager : MonoBehaviour
     {
         if(isHitterResult && isPitcherResult)
         {
+            FinalJudgeResult result = 
             finalJudge.CalculateFinalJudge(pitcherAccResult, hitterAccResult);
+            Debug.Log("FinalJudge" + result);
+            pitcherFlow.ShowJudgeResult(result);
+            hitterFlow.ShowJudgeResult(result);
+            StartCoroutine(ResetJudgeCoroutine());
         }
+
+    }
+    
+    //리셋 메서드
+    void ResetJudge()
+    {
+        pitcherFlow.HideJudgeResult();
+        hitterFlow.HideJudgeResult();
+        isHitterResult = false;
+        isPitcherResult = false;
     }
 
-    
+    //로직 종료 코루틴
+    IEnumerator ResetJudgeCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
+        //초기화
+        ResetJudge();
+    }
+
 }

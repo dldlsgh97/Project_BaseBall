@@ -3259,7 +3259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &963194226
 AudioListener:
   m_ObjectHideFlags: 0
@@ -6554,7 +6554,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1615136405
 Transform:
   m_ObjectHideFlags: 0
@@ -6856,6 +6856,7 @@ MonoBehaviour:
   uiMan: {fileID: 751569970}
   ball: {fileID: 320181521}
   timingUI: {fileID: 0}
+  finalJudgeText: {fileID: 1916914684}
 --- !u!1 &1711927539
 GameObject:
   m_ObjectHideFlags: 0
@@ -6873,7 +6874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1711927540
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7477,7 +7478,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1916914683
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8119,6 +8120,7 @@ MonoBehaviour:
   ballChoiceUI: {fileID: 0}
   pitchZoneUI: {fileID: 0}
   accUI: {fileID: 0}
+  finalJudgeText: {fileID: 1711927541}
   executor: {fileID: 2061560097}
   aIPitcher: {fileID: 2061560096}
   pitcherJudge: {fileID: 2061560098}

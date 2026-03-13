@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class HitterFlowManager : MonoBehaviour
@@ -23,6 +24,10 @@ public class HitterFlowManager : MonoBehaviour
     [Header("타자 정확도 계산")]
     private HitterJudge hitterJudge;
 
+    //최종 판단 표시 텍스트
+    [SerializeField]
+    private TextMeshProUGUI finalJudgeText;
+
     public Action<HitterTimingResult> OnHitterAccuracyResult;
     private void Start()
     {
@@ -30,12 +35,14 @@ public class HitterFlowManager : MonoBehaviour
         //타자 타이밍 데이터 생성
         hitterAccData = new HitterAccuracyConfig();
         hitterJudge = new HitterJudge(hitterAccData);
+        SetEvent();
     }
     //이벤트 구독
-    private void OnEnable()
+    void SetEvent()
     {
         timingUI.OnTimingFinished += SetHitterJudge;
     }
+    
     //이벤트 구독 해제
     private void OnDisable()
     {
@@ -61,4 +68,16 @@ public class HitterFlowManager : MonoBehaviour
         OnHitterAccuracyResult.Invoke(hitterResult);
     }
 
+    //최종 판단 UI에 표시
+    public void ShowJudgeResult(FinalJudgeResult result)
+    {
+        finalJudgeText.gameObject.SetActive(true);
+        finalJudgeText.text = result.ToString();
+    }
+
+    public void HideJudgeResult()
+    {
+        finalJudgeText.text = "";
+        finalJudgeText.gameObject.SetActive(false);
+    }
 }

@@ -56,5 +56,7 @@ public enum FinalJudgeResult
 {
     Strike,
     Ball,
-    Hit
+    Hit,
+    DeadBall,
+    Error
 }
