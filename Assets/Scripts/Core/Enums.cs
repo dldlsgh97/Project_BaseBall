@@ -38,7 +38,7 @@ public enum ZoneResult
 {
     Strike,
     Ball,
-    DeadBall
+    DeadBall,
 }
 
 //투구 판정(타자 판정) 결과 enum
@@ -59,4 +59,22 @@ public enum FinalJudgeResult
     Hit,
     DeadBall,
     Error
+}
+
+//PitchZone 높이 판정
+public enum PitchHeightResult
+{
+    High,
+    Middle,
+    Low,
+    None
+}
+
+//PitchZone 죄우 판정
+public enum PitchSideResult
+{
+    Left,
+    Center,
+    Right,
+    None
 }

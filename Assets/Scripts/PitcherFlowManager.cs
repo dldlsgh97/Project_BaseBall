@@ -42,12 +42,16 @@ public class PitcherFlowManager : MonoBehaviour
     //타자 UI타이밍 전달 이벤트
     public Action<float> OnStartHittingTimer;
 
-    public Action PitchEnd;
+    public Action PitchEnd;  
 
+    [Header("스트라이크존 판단 변수")]
     [SerializeField]
     private PitcherJudge pitcherJudge;
 
-    public Action<ZoneResult> OnPitcherJudgeResult;
+    public Action<PitchLocation> OnPitcherJudgeResult;
+    //스트라이크 판정 심화용 데이터
+    private StrikeZoneConfig zoneConfig;
+
     private void Start()
     {
         ballChoiceUI = uiMan.Get<BallChoiceUI>();
@@ -57,8 +61,9 @@ public class PitcherFlowManager : MonoBehaviour
     //PitchZone,StrikeZone 영역 받아오기
     public void Initialize(Rect pitchZone,Rect strikeZone,float z)
     {
+        zoneConfig = new StrikeZoneConfig();
         aIPitcher.Initialize(pitchZone,z);
-        pitcherJudge.Initialize(pitchZone, strikeZone, z);
+        pitcherJudge.Initialize(pitchZone, strikeZone, zoneConfig);        
     }
     //투구 로직 실행
     public void StartPitchFlow()
@@ -174,7 +179,7 @@ public class PitcherFlowManager : MonoBehaviour
     //스트라이크 판정
     void SetStrikeJudge(Vector3 pos)
     {
-        ZoneResult result = pitcherJudge.JudgeStrike(pos);
+        PitchLocation result = pitcherJudge.JudgeStrike(pos);
         OnPitcherJudgeResult?.Invoke(result);
     }
 

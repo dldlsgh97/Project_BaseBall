@@ -19,7 +19,7 @@ public class GameFlowManager : MonoBehaviour
     private Transform zonePos;
 
     //투수 판단값
-    private ZoneResult pitcherAccResult;
+    private PitchLocation pitcherAccResult;
     private bool isPitcherResult = false;
 
     //타자 판단값
@@ -84,7 +84,7 @@ public class GameFlowManager : MonoBehaviour
     }
 
     //투수 판단값 가져오고 최종 판단계산로직으로 넘김
-    void GetPitcherJudge(ZoneResult result)
+    void GetPitcherJudge(PitchLocation result)
     {
         pitcherAccResult = result;
         isPitcherResult = true;

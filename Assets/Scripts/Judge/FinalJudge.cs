@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class FinalJudge
 {
-    public FinalJudgeResult CalculateFinalJudge(ZoneResult pitcher, HitterTimingResult hitter)
-    {       
-        //판단 로직 작성
-        if(pitcher == ZoneResult.Strike)
+    public FinalJudgeResult CalculateFinalJudge(PitchLocation pitcher, HitterTimingResult hitter)
+    {
+        #region 이전 판단로직
+        /*//판단 로직 작성
+        if (pitcher == ZoneResult.Strike)
         {
             if(hitter == HitterTimingResult.None)
             {
@@ -45,7 +46,9 @@ public class FinalJudge
         {
             //오류출력용
             return FinalJudgeResult.Error;
-        }
-        
+        }*/
+        #endregion
+
+        return FinalJudgeResult.DeadBall;
     }
 }
