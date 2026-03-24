@@ -9,6 +9,8 @@ public class PitcherJudge : MonoBehaviour
     private Rect strikeZonePos;
     private StrikeZoneConfig config;
 
+    //디버깅용
+    public PitchZoneUI pitchZoneUI;
     //Zone 값 받아오기
     public void Initialize(Rect pitchZone,Rect strikeZone,StrikeZoneConfig data)
     {
@@ -38,7 +40,7 @@ public class PitcherJudge : MonoBehaviour
             Debug.Log("DeadBall");
         }*/
         #endregion
-
+        pitchZoneUI.UIDebug(config);
         //PitchZone 내부 판정
         if (!pitchZonePos.Contains(pos))
         {

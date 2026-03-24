@@ -49,6 +49,14 @@ public class FinalJudge
         }*/
         #endregion
 
+        ZoneResult zone;
+        PitchHeightResult height;
+        PitchSideResult side;
+
+        zone = pitcher.Zone;
+        height = pitcher.Height;
+        side = pitcher.Side;
+
         return FinalJudgeResult.DeadBall;
     }
 }
