@@ -78,3 +78,23 @@ public enum PitchSideResult
     Right,
     None
 }
+
+//타격 결과 (좌우)
+public enum HitSideResult
+{
+    VeryLeft,
+    Left,
+    Center,
+    Right,
+    VeryRight
+}
+
+//타격 결과 (높이)
+public enum HitHeightResult
+{
+    VeryHigh,
+    High,
+    Middle,
+    Low,
+    VeryLow
+}

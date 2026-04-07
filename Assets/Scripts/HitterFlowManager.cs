@@ -69,10 +69,10 @@ public class HitterFlowManager : MonoBehaviour
     }
 
     //최종 판단 UI에 표시
-    public void ShowJudgeResult(FinalJudgeResult result)
+    public void ShowJudgeResult(FinalHitResult result)
     {
         finalJudgeText.gameObject.SetActive(true);
-        finalJudgeText.text = result.ToString();
+        finalJudgeText.text = result.Result.ToString();
     }
 
     public void HideJudgeResult()

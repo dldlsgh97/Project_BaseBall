@@ -23,3 +23,17 @@ public struct PitchLocation
         Side = side;
     }
 }
+
+public struct FinalHitResult
+{
+    public FinalJudgeResult Result;
+    public HitHeightResult Height;
+    public HitSideResult Side;
+
+    public FinalHitResult(FinalJudgeResult result,HitHeightResult height, HitSideResult side)
+    {
+        Result = result;
+        Height = height;
+        Side = side;
+    }
+}

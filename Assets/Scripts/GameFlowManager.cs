@@ -28,6 +28,13 @@ public class GameFlowManager : MonoBehaviour
 
     //최종 판단 계산용 스크립트
     private FinalJudge finalJudge;
+
+    //최종 판단후 타격 로직 변수
+    private Vector3 pitcherPos;
+    [SerializeField]
+    private GameObject hitBallPrefab;
+    private HitBall hitBall;
+    private HitterStatConfig hitterPowerData;
     private void Start()
     {
         pitchZoneUI = uiMan.Get<PitchZoneUI>();
@@ -40,6 +47,9 @@ public class GameFlowManager : MonoBehaviour
         float targetZ = zonePos.position.z;
         //Zone 데이터 넘겨주기
         pitcherFlow.Initialize(pitchRect, strikeRect,targetZ);
+
+        hitBall = hitBallPrefab.GetComponent<HitBall>();
+        hitterPowerData = new HitterStatConfig();
     }
 
     private void OnEnable()//이벤트 구독
@@ -84,10 +94,12 @@ public class GameFlowManager : MonoBehaviour
     }
 
     //투수 판단값 가져오고 최종 판단계산로직으로 넘김
-    void GetPitcherJudge(PitchLocation result)
+    //타격 최종결과 이후 로직을 위해 투수가 던진공의 탄착지점도 같이 받아옴
+    void GetPitcherJudge(PitchLocation result,Vector3 pos)
     {
         pitcherAccResult = result;
         isPitcherResult = true;
+        pitcherPos = pos;
         TryFinalJudge();
     }
 
@@ -104,9 +116,10 @@ public class GameFlowManager : MonoBehaviour
     {
         if(isHitterResult && isPitcherResult)
         {
-            FinalJudgeResult result = 
+            FinalHitResult result = 
             finalJudge.CalculateFinalJudge(pitcherAccResult, hitterAccResult);
             Debug.Log("FinalJudge" + result);
+            StartHitBall(result, pitcherPos);
             pitcherFlow.ShowJudgeResult(result);
             hitterFlow.ShowJudgeResult(result);
             StartCoroutine(ResetJudgeCoroutine());
@@ -131,4 +144,10 @@ public class GameFlowManager : MonoBehaviour
         ResetJudge();
     }
 
+    void StartHitBall(FinalHitResult hitResult, Vector3 pos)
+    {
+        //SetActive로 변경
+        hitBall.gameObject.SetActive(true);
+        hitBall.Init(hitResult, pos, hitterPowerData);       
+    }
 }

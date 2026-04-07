@@ -48,7 +48,7 @@ public class PitcherFlowManager : MonoBehaviour
     [SerializeField]
     private PitcherJudge pitcherJudge;
 
-    public Action<PitchLocation> OnPitcherJudgeResult;
+    public Action<PitchLocation, Vector3> OnPitcherJudgeResult;
     //스트라이크 판정 심화용 데이터
     private StrikeZoneConfig zoneConfig;
 
@@ -180,14 +180,14 @@ public class PitcherFlowManager : MonoBehaviour
     void SetStrikeJudge(Vector3 pos)
     {
         PitchLocation result = pitcherJudge.JudgeStrike(pos);
-        OnPitcherJudgeResult?.Invoke(result);
+        OnPitcherJudgeResult?.Invoke(result,pos);
     }
 
     //최종 판단 UI에 표시
-    public void ShowJudgeResult(FinalJudgeResult result)
+    public void ShowJudgeResult(FinalHitResult result)
     {
         finalJudgeText.gameObject.SetActive(true);
-        finalJudgeText.text = result.ToString();
+        finalJudgeText.text = result.Result.ToString();
     }
 
     public void HideJudgeResult()
