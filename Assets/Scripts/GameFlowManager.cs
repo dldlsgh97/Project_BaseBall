@@ -119,9 +119,15 @@ public class GameFlowManager : MonoBehaviour
             FinalHitResult result = 
             finalJudge.CalculateFinalJudge(pitcherAccResult, hitterAccResult);
             Debug.Log("FinalJudge" + result);
-            StartHitBall(result, pitcherPos);
-            pitcherFlow.ShowJudgeResult(result);
-            hitterFlow.ShowJudgeResult(result);
+            if(result.Result == FinalJudgeResult.Hit)
+            {
+                StartHitBall(result, pitcherPos);
+            }
+            else
+            {
+                pitcherFlow.ShowJudgeResult(result);
+                hitterFlow.ShowJudgeResult(result);
+            }           
             StartCoroutine(ResetJudgeCoroutine());
         }
 

@@ -58,6 +58,7 @@ public enum FinalJudgeResult
     Ball,
     Hit,
     DeadBall,
+    Foul,
     Error
 }
 
