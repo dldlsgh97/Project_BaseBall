@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PitcherFlowManager : MonoBehaviour
@@ -16,6 +17,9 @@ public class PitcherFlowManager : MonoBehaviour
     private PitcherPitchZoneUI pitchZoneUI;
     [SerializeField]
     private AccuracyMiniGameUI accUI;
+    //최종 판단 표시 텍스트
+    [SerializeField]
+    private TextMeshProUGUI finalJudgeText;
 
     [Header("투수 공던지기 실행 스크립트")]
     [SerializeField]
@@ -38,13 +42,28 @@ public class PitcherFlowManager : MonoBehaviour
     //타자 UI타이밍 전달 이벤트
     public Action<float> OnStartHittingTimer;
 
-    public Action PitchEnd;
+    public Action PitchEnd;  
+
+    [Header("스트라이크존 판단 변수")]
+    [SerializeField]
+    private PitcherJudge pitcherJudge;
+
+    public Action<PitchLocation, Vector3> OnPitcherJudgeResult;
+    //스트라이크 판정 심화용 데이터
+    private StrikeZoneConfig zoneConfig;
 
     private void Start()
     {
         ballChoiceUI = uiMan.Get<BallChoiceUI>();
         pitchZoneUI = uiMan.Get<PitcherPitchZoneUI>();
         accUI = uiMan.Get<AccuracyMiniGameUI>();
+    }
+    //PitchZone,StrikeZone 영역 받아오기
+    public void Initialize(Rect pitchZone,Rect strikeZone,float z)
+    {
+        zoneConfig = new StrikeZoneConfig();
+        aIPitcher.Initialize(pitchZone,z);
+        pitcherJudge.Initialize(pitchZone, strikeZone, zoneConfig);        
     }
     //투구 로직 실행
     public void StartPitchFlow()
@@ -104,8 +123,13 @@ public class PitcherFlowManager : MonoBehaviour
     //공 던지기 로직
     void StartPitch()
     {
+        //중복방지
+        executor.OnStartHittingTimer -= StartHitterTiming;
+        executor.OnOffSetBallTargetPos -= SetStrikeJudge;
+
         //타자 UI로 데이터 던지는 이벤트
         executor.OnStartHittingTimer += StartHitterTiming;
+
         //투구 로직에서 정한 미니게임 구조체로 병합
         PitchRequest request = new PitchRequest
         {
@@ -115,8 +139,9 @@ public class PitcherFlowManager : MonoBehaviour
         };
         //일반 투구 로직
         executor.OnPitchFinished += EndPitch;
+        //오차값 적용된 탄착점을 가져와 스트라이크 판정
+        executor.OnOffSetBallTargetPos += SetStrikeJudge;
 
-        
         executor.ExecutePitch(request);
         
     }
@@ -131,18 +156,44 @@ public class PitcherFlowManager : MonoBehaviour
 
     public void AIPitch()
     {
-        executor.OnStartHittingTimer += StartHitterTiming;//중복방지
+        //중복방지
+        executor.OnStartHittingTimer -= StartHitterTiming;
+        executor.OnOffSetBallTargetPos -= SetStrikeJudge;
+        
         //타자 UI로 데이터 던지는 이벤트
         executor.OnStartHittingTimer += StartHitterTiming;
         PitchRequest aiRequest = aIPitcher.SetAIPitcher();
         executor.OnPitchFinished += EndPitch;
+
+        //오차값 적용된 탄착점을 가져와 스트라이크 판정
+        executor.OnOffSetBallTargetPos += SetStrikeJudge;
+
         executor.ExecutePitch(aiRequest);
     }
 
     void StartHitterTiming(float duration)
     {
-        Debug.Log("PitcherFlow Event");
         OnStartHittingTimer?.Invoke(duration);
+    }
+
+    //스트라이크 판정
+    void SetStrikeJudge(Vector3 pos)
+    {
+        PitchLocation result = pitcherJudge.JudgeStrike(pos);
+        OnPitcherJudgeResult?.Invoke(result,pos);
+    }
+
+    //최종 판단 UI에 표시
+    public void ShowJudgeResult(FinalHitResult result)
+    {
+        finalJudgeText.gameObject.SetActive(true);
+        finalJudgeText.text = result.Result.ToString();
+    }
+
+    public void HideJudgeResult()
+    {
+        finalJudgeText.text = "";
+        finalJudgeText.gameObject.SetActive(false);
     }
 
 }

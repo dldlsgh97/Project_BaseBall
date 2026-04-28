@@ -32,3 +32,70 @@ public enum AccuracyResult
     Bad,
     Miss
 }
+
+//투구 판정(투수 판정) 결과 enum
+public enum ZoneResult
+{
+    Strike,
+    Ball,
+    DeadBall,
+}
+
+//투구 판정(타자 판정) 결과 enum
+public enum HitterTimingResult
+{
+    Fast,
+    Late,
+    Perfect,
+    Miss,
+    None //스윙 X
+}
+
+//투구 판정(타자 + 투수 판정 -> 최종 투구 판정) 결과 enum
+public enum FinalJudgeResult
+{
+    Strike,
+    Ball,
+    Hit,
+    DeadBall,
+    Foul,
+    Error
+}
+
+//PitchZone 높이 판정
+public enum PitchHeightResult
+{
+    High,
+    Middle,
+    Low,
+    None
+}
+
+//PitchZone 죄우 판정
+public enum PitchSideResult
+{
+    Left,
+    Center,
+    Right,
+    None
+}
+
+//타격 결과 (좌우)
+public enum HitSideResult
+{
+    VeryLeft,
+    Left,
+    Center,
+    Right,
+    VeryRight
+}
+
+//타격 결과 (높이)
+public enum HitHeightResult
+{
+    VeryHigh,
+    High,
+    Middle,
+    Low,
+    VeryLow
+}

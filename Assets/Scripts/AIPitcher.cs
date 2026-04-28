@@ -5,13 +5,15 @@ using UnityEngine;
 public class AIPitcher : MonoBehaviour
 {
     [SerializeField]
-    private RectTransform PitchZone;
+    private Rect pitchZone;
 
-    private PitchZoneUI pitchZoneUI;
+    [SerializeField]
+    private float targetZ;
 
-    private void Start()
+    public void Initialize(Rect Zone,float z)
     {
-        pitchZoneUI = GameManager.instance.ui.Get<PitchZoneUI>();
+        pitchZone = Zone;
+        targetZ = z;
     }
     private PitchType DecidePitchType()
     {
@@ -34,7 +36,8 @@ public class AIPitcher : MonoBehaviour
     }
     private Vector3 DecideTargetPos()
     {
-        //스트라이크존 중심점
+        #region 이전 로직
+        /*//스트라이크존 중심점
         Vector3 center = PitchZone.transform.position;
 
         //스트라이크존 UI의 네 모서리 위치 받아오기
@@ -50,7 +53,12 @@ public class AIPitcher : MonoBehaviour
         float randomY = Random.Range(minY, maxY);
         float z = center.z;
         //탄착점 출력
-        return new Vector3(randomX,randomY,z);
+        return new Vector3(randomX,randomY,z);*/
+        #endregion
+
+        float x = Random.Range(pitchZone.xMin, pitchZone.xMax);
+        float y = Random.Range(pitchZone.yMin, pitchZone.yMax);
+        return new Vector3(x, y, targetZ);
     }
     private float DecideAccuracy()
     {
